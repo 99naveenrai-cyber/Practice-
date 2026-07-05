@@ -394,6 +394,80 @@
   .empty-state .icon{ font-size:42px; margin-bottom:10px; }
   .empty-state .en{ display:block; color:var(--faint); font-size:14px; margin-top:6px; }
 
+
+
+  /* ---------- Battle rooms ---------- */
+  .battle-shell{
+    background:linear-gradient(135deg, rgba(2,8,33,.96), rgba(0,48,57,.94));
+    border:3px solid #062b40;
+    border-radius:26px;
+    padding:22px;
+    margin:4px 0 30px;
+    box-shadow:0 8px 0 rgba(0,0,0,.18), 0 18px 32px rgba(0,40,80,.18);
+    color:#fff;
+  }
+  .battle-tabs{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+  .battle-tab{
+    border:2px solid rgba(94,255,183,.75);
+    border-radius:17px;
+    padding:14px 10px;
+    background:rgba(255,255,255,.08);
+    color:#dfffea;
+    font-family:'Baloo 2';
+    font-weight:800;
+    font-size:clamp(16px,4vw,22px);
+    cursor:pointer;
+    text-shadow:0 0 7px #00ff88, 0 0 14px #00aaff, 0 2px 0 #001233;
+    box-shadow:inset 0 0 14px rgba(49,255,167,.15), 0 0 18px rgba(20,255,170,.18);
+    transition:transform .15s ease, background .2s ease;
+  }
+  .battle-tab:hover{ transform:translateY(-2px); }
+  .battle-tab.active{ background:linear-gradient(135deg, #061b50, #006b5a); color:#fff; }
+  .battle-pane{ display:none; animation:battleDrop .26s ease both; }
+  .battle-pane.active{ display:block; }
+  @keyframes battleDrop{ from{ opacity:0; transform:translateY(-8px) scale(.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
+  .battle-create-card, .battle-room-card{
+    background:rgba(255,255,255,.95);
+    color:var(--ink);
+    border:3px solid #062b40;
+    border-radius:20px;
+    padding:16px;
+    box-shadow:0 5px 0 rgba(0,0,0,.25);
+  }
+  .battle-create-card p{ margin:0 0 12px; color:var(--muted); font-weight:700; }
+  .battle-drop{ position:relative; }
+  .battle-drop-btn{
+    width:100%; padding:15px 16px; border:3px solid #062b40; border-radius:15px;
+    background:#f5fffb; color:#042845; font-family:'Baloo 2'; font-size:18px; font-weight:800;
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer; box-shadow:0 4px 0 #062b40;
+  }
+  .battle-drop-panel{
+    margin-top:10px; display:grid; gap:8px; max-height:0; overflow:hidden; opacity:0;
+    transition:max-height .35s ease, opacity .25s ease;
+  }
+  .battle-drop-panel.open{ max-height:280px; opacity:1; }
+  .battle-size-option{
+    border:0; border-radius:13px; padding:13px 15px; text-align:left; cursor:pointer;
+    color:#fff; font-family:'Baloo 2'; font-size:17px; font-weight:800;
+    background:linear-gradient(90deg, #061b50, #008f67);
+    box-shadow:0 3px 0 rgba(0,0,0,.25);
+  }
+  .battle-list{ display:grid; gap:12px; }
+  .battle-room-card{ animation:cardIn .35s ease both; }
+  .battle-room-top{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+  .battle-room-name{ font-family:'Baloo 2'; font-size:20px; font-weight:800; color:#061b50; }
+  .battle-pill{ background:#e7fbf1; color:#006b4e; border:2px solid #009b70; border-radius:999px; padding:5px 10px; font-weight:800; white-space:nowrap; }
+  .battle-meta{ margin:8px 0 12px; color:var(--muted); font-weight:700; }
+  .join-btn, .result-btn{
+    padding:10px 18px; border:3px solid var(--ink); border-radius:13px; background:var(--emerald);
+    color:#fff; font-family:'Baloo 2'; font-weight:800; cursor:pointer; box-shadow:0 4px 0 #14804f; margin-right:7px;
+  }
+  .result-btn{ background:#3BA7F0; box-shadow:0 4px 0 #176da8; }
+  .room-result{
+    margin-top:12px; padding:12px; border-radius:14px; background:#f4fbff; border:2px dashed #1E8FE0; color:#16324a; font-weight:700;
+  }
+  .battle-empty{ text-align:center; color:#dfffea; border:2px dashed rgba(255,255,255,.35); border-radius:16px; padding:22px; font-weight:700; }
+
   footer{
     margin-top:34px;
     border-radius:18px;
@@ -587,6 +661,29 @@
     <span class="en">Get started — pick a class and subject above</span>
   </div>
 
+
+
+  <section class="battle-shell" id="battleShell">
+    <div class="battle-tabs">
+      <button class="battle-tab active" id="createRoomTab">आजा बैटल करते हैं</button>
+      <button class="battle-tab" id="availableRoomTab">Available Room</button>
+    </div>
+
+    <div class="battle-pane active" id="createRoomPane">
+      <div class="battle-create-card">
+        <p>कितने students के साथ battle खेलनी है? Select करते ही room अपने-आप बन जाएगा।</p>
+        <div class="battle-drop">
+          <button class="battle-drop-btn" id="battleDropBtn"><span>Players चुनो</span><span>▾</span></button>
+          <div class="battle-drop-panel" id="battleDropPanel"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="battle-pane" id="availableRoomPane">
+      <div class="battle-list" id="battleRoomList"></div>
+    </div>
+  </section>
+
   <footer>
     <div class="footer-bounce">
       <div class="footer-track">
@@ -771,6 +868,148 @@ function renderLibrary(){
     libraryGrid.appendChild(card);
   });
 }
+
+
+
+/* ============================================================
+   BATTLE ROOM SYSTEM - frontend demo using localStorage
+   ============================================================ */
+const BATTLE_STORE_KEY = 'ideakdc_battle_rooms_v1';
+const ROOM_LIFE_MS = 2 * 24 * 60 * 60 * 1000;
+let battleDropOpen = false;
+
+const createRoomTab = document.getElementById('createRoomTab');
+const availableRoomTab = document.getElementById('availableRoomTab');
+const createRoomPane = document.getElementById('createRoomPane');
+const availableRoomPane = document.getElementById('availableRoomPane');
+const battleDropBtn = document.getElementById('battleDropBtn');
+const battleDropPanel = document.getElementById('battleDropPanel');
+const battleRoomList = document.getElementById('battleRoomList');
+
+function getRooms(){
+  const now = Date.now();
+  let rooms = [];
+  try{ rooms = JSON.parse(localStorage.getItem(BATTLE_STORE_KEY) || '[]'); }catch(e){ rooms = []; }
+  rooms = rooms.filter(room => room.expiresAt > now);
+  localStorage.setItem(BATTLE_STORE_KEY, JSON.stringify(rooms));
+  return rooms;
+}
+function saveRooms(rooms){ localStorage.setItem(BATTLE_STORE_KEY, JSON.stringify(rooms)); }
+function roomCode(){ return 'BATTLE-' + Math.random().toString(36).slice(2,6).toUpperCase(); }
+function formatTime(ms){
+  if(ms <= 0) return 'Expired';
+  const hours = Math.floor(ms / (60*60*1000));
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+  return days > 0 ? `${days} दिन ${remHours} घंटे` : `${Math.max(1, remHours)} घंटे`;
+}
+function setBattleTab(tab){
+  const isCreate = tab === 'create';
+  createRoomTab.classList.toggle('active', isCreate);
+  availableRoomTab.classList.toggle('active', !isCreate);
+  createRoomPane.classList.toggle('active', isCreate);
+  availableRoomPane.classList.toggle('active', !isCreate);
+  renderBattleRooms();
+}
+createRoomTab.addEventListener('click', () => setBattleTab('create'));
+availableRoomTab.addEventListener('click', () => setBattleTab('available'));
+
+[2,3,4,5].forEach(size => {
+  const btn = document.createElement('button');
+  btn.className = 'battle-size-option';
+  btn.textContent = `${size} के साथ`;
+  btn.addEventListener('click', () => createBattleRoom(size));
+  battleDropPanel.appendChild(btn);
+});
+
+battleDropBtn.addEventListener('click', () => {
+  battleDropOpen = !battleDropOpen;
+  battleDropPanel.classList.toggle('open', battleDropOpen);
+});
+
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('.battle-drop')){
+    battleDropOpen = false;
+    battleDropPanel.classList.remove('open');
+  }
+});
+
+function createBattleRoom(maxPlayers){
+  const rooms = getRooms();
+  const name = roomCode();
+  rooms.unshift({
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+    name,
+    maxPlayers,
+    players: 1,
+    createdAt: Date.now(),
+    expiresAt: Date.now() + ROOM_LIFE_MS,
+    result: ''
+  });
+  saveRooms(rooms);
+  battleDropOpen = false;
+  battleDropPanel.classList.remove('open');
+  battleDropBtn.querySelector('span').textContent = `Room बना: ${name}`;
+  setBattleTab('available');
+}
+
+function joinRoom(id){
+  const rooms = getRooms();
+  const room = rooms.find(r => r.id === id);
+  if(!room) return;
+  if(room.players < room.maxPlayers){
+    room.players += 1;
+    if(room.players >= room.maxPlayers){
+      room.result = `Room full हो गया। अब battle खेलो — result इसी room में दिखेगा।`;
+    }
+  }
+  saveRooms(rooms);
+  renderBattleRooms();
+}
+
+function showResult(id){
+  const rooms = getRooms();
+  const room = rooms.find(r => r.id === id);
+  if(!room) return;
+  const scores = Array.from({length: room.maxPlayers}, (_, i) => ({name:`Student ${i+1}`, score: Math.floor(60 + Math.random()*41)}));
+  scores.sort((a,b) => b.score - a.score);
+  room.result = `🏆 Winner: ${scores[0].name} (${scores[0].score}%)<br>` + scores.map((s,i)=>`${i+1}. ${s.name} — ${s.score}%`).join('<br>');
+  saveRooms(rooms);
+  renderBattleRooms();
+}
+
+function renderBattleRooms(){
+  const rooms = getRooms();
+  const available = rooms.filter(room => room.players < room.maxPlayers);
+  const fullRooms = rooms.filter(room => room.players >= room.maxPlayers);
+  if(available.length === 0 && fullRooms.length === 0){
+    battleRoomList.innerHTML = '<div class="battle-empty">अभी कोई available room नहीं है। पहले battle room create करो।</div>';
+    return;
+  }
+
+  const cardHtml = (room, isFull) => {
+    const expiry = formatTime(room.expiresAt - Date.now());
+    return `
+      <div class="battle-room-card">
+        <div class="battle-room-top">
+          <div class="battle-room-name">${room.name}</div>
+          <div class="battle-pill">${room.players}/${room.maxPlayers}</div>
+        </div>
+        <div class="battle-meta">Expires in 2 days · बचा समय: ${expiry}</div>
+        ${isFull ? '<div class="battle-meta">Room full — अब यह available room में join के लिए नहीं दिखेगा।</div>' : `<button class="join-btn" onclick="joinRoom('${room.id}')">Join Room</button>`}
+        ${isFull ? `<button class="result-btn" onclick="showResult('${room.id}')">Result दिखाओ</button>` : ''}
+        ${room.result ? `<div class="room-result">${room.result}</div>` : ''}
+      </div>`;
+  };
+
+  battleRoomList.innerHTML = `
+    ${available.length ? '<div class="battle-empty" style="padding:10px">Available Rooms</div>' + available.map(room => cardHtml(room, false)).join('') : '<div class="battle-empty">Available room खाली है।</div>'}
+    ${fullRooms.length ? '<div class="battle-empty" style="padding:10px">Result Rooms</div>' + fullRooms.map(room => cardHtml(room, true)).join('') : ''}
+  `;
+}
+
+renderBattleRooms();
+setInterval(renderBattleRooms, 60000);
 
 // initial state
 renderLibrary();
