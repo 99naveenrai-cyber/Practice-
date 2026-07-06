@@ -26,7 +26,7 @@
   <div class="footer-note">IDEAKDC · Apni video dekho, seekho, coins jeeto</div>
 </div>
 <script>
-const VIDEO_URL = "https://youtu.be/tlZLUOBury4";
+const VIDEO_URL = "https://www.youtube.com/embed/tlZLUOBury4";
 const QUIZ_TITLE = "Reflection of Light";
 const COINS_PER_CORRECT = 10;
 const CORRECT_MESSAGES = ["सही है", "Good Going!", "Wah!", "शानदार", "अद्भुत", "कमाल कर दिया", "Outstanding!", "Excellent!", "बिलकुल सही जवाब", "ठीक है"];
@@ -44,7 +44,7 @@ function getYoutubeId(url){
 }
 function getEmbedUrl(url){const id=getYoutubeId(url);return id?`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`:null;}
 const embedUrl=getEmbedUrl(VIDEO_URL);
-if(embedUrl){
+const embedUrl = VIDEO_URL;
   document.getElementById("video-embed").innerHTML=`<iframe src="${embedUrl}" title="IDEAKDC video lesson" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
   const videoId=getYoutubeId(VIDEO_URL);
   const fallback=document.createElement('div');
