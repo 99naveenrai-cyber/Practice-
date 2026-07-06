@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pahada Practice — IDEAKDC</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  // Same config as index.html — replace with your real Firebase project details.
+  const firebaseConfig = {
+    apiKey: "AIzaSyDDSiGJJdoySLmJLHJaQBdj213DxVKCwaQ",
+    authDomain: "ideakdc-24b0b.firebaseapp.com",
+    projectId: "ideakdc-24b0b",
+    storageBucket: "ideakdc-24b0b.firebasestorage.app",
+    messagingSenderId: "577382246228",
+    appId: "1:577382246228:web:e3ec8a45d65b2799268ac1"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+<style>
+  :root{
+    --sky:#3EC6FF;
+    --sun:#FFC93C;
+    --coral:#FF6B5E;
+    --leaf:#3ED0A0;
+    --ink:#1E2A45;
+    --paper:#FFF9EE;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,201,60,.35), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(62,198,255,.35), transparent 45%),
+      var(--paper);
+    font-family:'Nunito', sans-serif;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 14px 40px;
+  }
+  h1{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:clamp(24px,6vw,34px);
+    margin:6px 0 2px;
+    text-align:center;
+  }
+  .tagline{
+    font-weight:600;
+    color:#5b6b8c;
+    margin-bottom:18px;
+    text-align:center;
+    font-size:14px;
+  }
+  #setup, #game, #result{
+    width:100%;
+    max-width:420px;
+    background:var(--card);
+    border-radius:22px;
+    padding:22px 20px;
+    box-shadow:0 10px 0 rgba(30,42,69,.08), 0 4px 18px rgba(30,42,69,.06);
+    border:3px solid #1E2A45;
+  }
+  #setup label{
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:15px;
+    display:block;
+    margin-bottom:8px;
+  }
+  .table-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .table-grid button{
+    aspect-ratio:1;
+    border:2px solid var(--ink);
+    border-radius:12px;
+    background:#fff;
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+    transition:transform .1s ease;
+  }
+  .table-grid button.selected{
+    background:var(--sun);
+    transform:translateY(-2px);
+  }
+  .primary-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:var(--coral);
+    color:#fff;
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:17px;
+    cursor:pointer;
+    border-bottom:4px solid #c94636;
+    transition:transform .08s ease;
+  }
+  .primary-btn:active{ transform:translateY(2px); border-bottom-width:2px; }
+  .primary-btn:disabled{ background:#c9d0dd; border-bottom-color:#a9b0bd; cursor:not-allowed; }
+
+  #game{ display:none; }
+  .hud{
+    display:flex;
+    justify-content:space-between;
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:14px;
+    color:#5b6b8c;
+  }
+  .hud span b{ color:var(--ink); }
+  .progress-bar{
+    height:10px;
+    background:#eef0f5;
+    border-radius:6px;
+    overflow:hidden;
+    margin-bottom:22px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--leaf);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .question{
+    font-family:'Baloo 2';
+    font-weight:800;
+    font-size:clamp(30px,9vw,42px);
+    text-align:center;
+    margin:10px 0 24px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .opt-btn{
+    padding:16px 8px;
+    border:2px solid var(--ink);
+    border-radius:16px;
+    background:#fff;
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:20px;
+    cursor:pointer;
+    border-bottom:4px solid #1E2A45;
+  }
+  .opt-btn.correct{ background:var(--leaf); color:#fff; }
+  .opt-btn.wrong{ background:var(--coral); color:#fff; }
+  .opt-btn:disabled{ cursor:default; }
+
+  #result{ display:none; text-align:center; }
+  #result .mascot{ font-size:56px; }
+  #result h2{ font-family:'Baloo 2'; font-size:26px; margin:8px 0; }
+  #result p{ color:#5b6b8c; font-weight:600; margin-bottom:18px; }
+  .secondary-btn{
+    background:none;
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:10px 16px;
+    font-family:'Baloo 2';
+    font-weight:700;
+    margin-top:10px;
+    cursor:pointer;
+  }
+  footer{
+    margin-top:22px;
+    font-size:12px;
+    color:#9aa4bb;
+    font-weight:600;
+    text-align:center;
+  }
+  h1 .en, #result h2 .en-sub{
+    display:block;
+    font-family:'Nunito', sans-serif;
+    font-weight:700;
+    font-size:.5em;
+    color:#5b6b8c;
+    letter-spacing:.3px;
+  }
+  .tagline .en, footer .en-sub{
+    font-size:.9em;
+    color:#9aa4bb;
+  }
+  label .en-sub{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    color:#9aa4bb;
+    margin-top:2px;
+  }
+  .en-btn{
+    display:block;
+    font-family:'Nunito', sans-serif;
+    font-size:.6em;
+    font-weight:600;
+    opacity:.85;
+  }
+</style>
+</head>
+<body>
+
+<h1>🚀 पहाड़ा अभ्यास <span class="en">Pahada Practice</span></h1>
+<div class="tagline">अपना टेबल चुनो, टाइमर चालू, और पॉइंट्स बनाओ!<br><span class="en">Pick your table, start the timer, and earn points!</span></div>
+
+<div id="setup">
+  <label>किस टेबल का अभ्यास करना है? <span class="en-sub">Which table do you want to practice?</span></label>
+  <div class="table-grid" id="tableGrid"></div>
+  <button class="primary-btn" id="startBtn" disabled>शुरू करो → <span class="en-btn">Start</span></button>
+</div>
+
+<div id="game">
+  <div class="hud">
+    <span>Score: <b id="scoreLabel">0</b></span>
+    <span>Sawaal <b id="qIndex">1</b>/<b id="qTotal">10</b></span>
+    <span>⏱ <b id="timer">10</b>s</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="question" id="questionText">7 × 3 = ?</div>
+  <div class="options" id="optionsGrid"></div>
+</div>
+
+<div id="result">
+  <div class="mascot" id="resultEmoji">🌟</div>
+  <h2 id="resultTitle">Zabardast!</h2>
+  <p id="resultDetail">Aapne 10 me se 8 sahi kiye</p>
+  <button class="primary-btn" id="retryBtn">फिर से खेलो <span class="en-btn">Play Again</span></button>
+  <br>
+  <button class="secondary-btn" id="changeTableBtn">दूसरा टेबल चुनो <span class="en-btn">Choose Another Table</span></button>
+  <div id="roomReturnWrap" style="display:none; margin-top:14px; text-align:center;">
+    <a id="roomReturnLink" href="#" style="font-family:'Baloo 2'; font-weight:700; color:#3EC6FF; text-decoration:none;">⬅ बैटल रूम पर वापस जाओ · Back to Battle Room</a>
+  </div>
+</div>
+
+<footer>IDEAKDC · सीखो, अभ्यास करो, आगे बढ़ो <span class="en-sub">Learn, Practice, Progress</span></footer>
+
+<script>
+/* ---------- CONFIG ---------- */
+const QUESTIONS_PER_ROUND = 10;
+const TIME_PER_QUESTION = 10; // seconds
+
+/* ---------- STATE ---------- */
+let selectedTable = null;
+let questions = [];
+let currentIndex = 0;
+let score = 0;
+let timerInterval = null;
+let timeLeft = TIME_PER_QUESTION;
+
+/* ---------- SETUP SCREEN: build table picker 2-20 ---------- */
+const tableGrid = document.getElementById('tableGrid');
+for (let n = 2; n <= 20; n++) {
+  const btn = document.createElement('button');
+  btn.textContent = n;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.table-grid button').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedTable = n;
+    document.getElementById('startBtn').disabled = false;
+  });
+  tableGrid.appendChild(btn);
+}
+
+document.getElementById('startBtn').addEventListener('click', startRound);
+document.getElementById('retryBtn').addEventListener('click', startRound);
+document.getElementById('changeTableBtn').addEventListener('click', () => {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('setup').style.display = 'block';
+});
+
+/* ---------- ROUND LOGIC ---------- */
+function generateQuestions(table, count) {
+  const pool = [];
+  for (let m = 1; m <= 12; m++) pool.push(m);
+  // shuffle
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const picks = pool.slice(0, count);
+  return picks.map(m => {
+    const answer = table * m;
+    const options = new Set([answer]);
+    while (options.size < 4) {
+      const delta = Math.floor(Math.random() * 10) - 5;
+      const fake = answer + (delta === 0 ? 3 : delta);
+      if (fake > 0) options.add(fake);
+    }
+    const optArr = Array.from(options);
+    for (let i = optArr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [optArr[i], optArr[j]] = [optArr[j], optArr[i]];
+    }
+    return { q: `${table} × ${m} = ?`, answer, options: optArr };
+  });
+}
+
+function startRound() {
+  questions = generateQuestions(selectedTable, QUESTIONS_PER_ROUND);
+  currentIndex = 0;
+  score = 0;
+  document.getElementById('qTotal').textContent = QUESTIONS_PER_ROUND;
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  clearInterval(timerInterval);
+  timeLeft = TIME_PER_QUESTION;
+  const q = questions[currentIndex];
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('qIndex').textContent = currentIndex + 1;
+  document.getElementById('scoreLabel').textContent = score;
+  document.getElementById('timer').textContent = timeLeft;
+  document.getElementById('progressFill').style.width =
+    `${(currentIndex / QUESTIONS_PER_ROUND) * 100}%`;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => handleAnswer(opt, btn));
+    grid.appendChild(btn);
+  });
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer').textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleAnswer(null, null); // time's up = wrong
+    }
+  }, 1000);
+}
+
+function handleAnswer(selected, btnEl) {
+  clearInterval(timerInterval);
+  const q = questions[currentIndex];
+  const allBtns = document.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (Number(b.textContent) === q.answer) b.classList.add('correct');
+  });
+  if (selected === q.answer) {
+    score++;
+    document.getElementById('scoreLabel').textContent = score;
+  } else if (btnEl) {
+    btnEl.classList.add('wrong');
+  }
+  setTimeout(() => {
+    currentIndex++;
+    if (currentIndex < QUESTIONS_PER_ROUND) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }, 900);
+}
+
+function showResult() {
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('progressFill').style.width = '100%';
+
+  const pct = score / QUESTIONS_PER_ROUND;
+  const emoji = document.getElementById('resultEmoji');
+  const title = document.getElementById('resultTitle');
+  if (pct === 1) { emoji.textContent = '🏆'; title.innerHTML = 'पूर्ण अंक! <span class="en-sub">Perfect Score!</span>'; }
+  else if (pct >= 0.7) { emoji.textContent = '🌟'; title.innerHTML = 'ज़बरदस्त! <span class="en-sub">Excellent!</span>'; }
+  else if (pct >= 0.4) { emoji.textContent = '💪'; title.innerHTML = 'अच्छा प्रयास! <span class="en-sub">Good Try!</span>'; }
+  else { emoji.textContent = '📘'; title.innerHTML = 'और अभ्यास करो! <span class="en-sub">Practice More!</span>'; }
+
+  document.getElementById('resultDetail').textContent =
+    `${selectedTable} का टेबल — ${QUESTIONS_PER_ROUND} में से ${score} सही (Table of ${selectedTable} — ${score}/${QUESTIONS_PER_ROUND} correct)`;
+
+  // If this quiz was opened from a Battle Room, submit the score back to Firestore
+  const params = new URLSearchParams(window.location.search);
+  const roomId = params.get('room');
+  const playerName = params.get('player');
+  if (roomId && playerName && typeof db !== 'undefined') {
+    db.collection('battleRooms').doc(roomId).get().then(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
+      const updatedPlayers = data.players.map(p =>
+        p.name === playerName ? { ...p, score } : p
+      );
+      return db.collection('battleRooms').doc(roomId).update({ players: updatedPlayers });
+    }).catch(e => console.error('Could not submit score to room:', e));
+
+    const wrap = document.getElementById('roomReturnWrap');
+    const link = document.getElementById('roomReturnLink');
+    link.href = `index.html?room=${roomId}`;
+    wrap.style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
