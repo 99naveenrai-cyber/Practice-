@@ -1,1 +1,129 @@
+    try{const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();return true;}catch(err){return false;}
+  }
+}
+function setShareNote(text){const el=document.getElementById('share-copy-note');if(el)el.textContent=text;}
+window.ideakdcFinish=function(correctCount,totalQuestions){playVictorySound();confetti(true);document.getElementById("quiz-card").classList.add("hidden");try{const lastName=localStorage.getItem("ideakdc_last_name");if(lastName)document.getElementById("name-input").value=lastName;}catch(e){}document.getElementById("screen-name").classList.remove("hidden");document.getElementById("submit-name-btn").onclick=()=>{const name=document.getElementById("name-input").value.trim()||"Student";const coins=correctCount*COINS_PER_CORRECT;const rollNo=getOrCreateRollNo(name);try{const key=`ideakdc_quiz_${QUIZ_TITLE}_${name.trim().toLowerCase()}`;localStorage.setItem(key,JSON.stringify({name,rollNo,correctCount,totalQuestions,coins,date:new Date().toISOString(),shareLink:getPublicQuizLink()}));localStorage.setItem("ideakdc_last_name",name);}catch(e){}const shareMsg=buildShareMessage(name,correctCount,totalQuestions,coins);document.getElementById("result-greeting").textContent=`Shaabash, ${name}! Tumne practice complete ki.`;document.getElementById("score-text").textContent=`${correctCount}/${totalQuestions}`;document.getElementById("screen-name").classList.add("hidden");document.getElementById("screen-result").classList.remove("hidden");animateCoinCount(coins);document.getElementById("share-btn").onclick=()=>{window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`,"_blank");};document.getElementById("wa-status-btn").onclick=async()=>{await copyShareMessage(shareMsg);setShareNote("Message copy ho gaya. WhatsApp Status me paste karo. Link included: "+getPublicQuizLink());window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`,"_blank");};document.getElementById("insta-share-btn").onclick=async()=>{await copyShareMessage(shareMsg);setShareNote("Instagram ke liye message copy ho gaya. Instagram open karke caption/DM me paste karo. Link included: "+getPublicQuizLink());window.open("https://www.instagram.com/","_blank");};document.getElementById("insta-story-btn").onclick=async()=>{await copyShareMessage(shareMsg);setShareNote("Instagram Story ke liye message copy ho gaya. Story me text/link paste karo. Link included: "+getPublicQuizLink());window.location.href="instagram://story-camera";setTimeout(()=>{window.open("https://www.instagram.com/","_blank");},700);};};};
+const QUESTIONS=[
+ {q:"A highly polished surface mostly does what to the light falling on it?",opts:["Reflects most light","Absorbs all light","Refracts all light","Stops light completely"],ans:0},
+ {q:"According to the first law of reflection, angle of incidence is equal to:",opts:["Angle of refraction","Angle of reflection","Angle of deviation","Angle of dispersion"],ans:1},
+ {q:"Incident ray, reflected ray and normal at the point of incidence lie in:",opts:["Different planes","Same plane","Opposite planes","No fixed plane"],ans:1},
+ {q:"Image formed by a plane mirror is always:",opts:["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"],ans:1},
+ {q:"In a plane mirror, image distance is:",opts:["Less than object distance","Greater than object distance","Equal to object distance","Always zero"],ans:2},
+ {q:"Reflecting surface curved inwards is called:",opts:["Convex mirror","Plane mirror","Concave mirror","Transparent mirror"],ans:2},
+ {q:"Reflecting surface curved outwards is called:",opts:["Concave mirror","Convex mirror","Plane mirror","Rough mirror"],ans:1},
+ {q:"The centre of the reflecting surface of a spherical mirror is called:",opts:["Focus","Pole","Aperture","Principal axis"],ans:1},
+ {q:"The centre of the sphere of which a spherical mirror is a part is:",opts:["Pole","Principal focus","Centre of curvature","Aperture"],ans:2},
+ {q:"The line passing through pole and centre of curvature is called:",opts:["Principal axis","Normal axis","Focal line","Mirror line"],ans:0}
+];
+(function(){
+const app=document.getElementById('ideakdc-quiz-app');
+let idx=0,score=0,selected=[],locked=[],timerOn=true,paused=false,timeLeft=30,timer=null,finished=false;
 
+function shuffleAll(){
+  QUESTIONS.forEach(q=>{
+    let correct=q.opts[q.ans];
+    for(let i=q.opts.length-1;i>0;i--){
+      let j=Math.floor(Math.random()*(i+1));
+      [q.opts[i],q.opts[j]]=[q.opts[j],q.opts[i]];
+    }
+    q.ans=q.opts.indexOf(correct);
+  });
+}
+function soundButton(){return `<div class="sound-row"><button class="sound-btn" id="soundBtn">${soundOn?'🔊 Sound ON':'🔇 Sound OFF'}</button></div>`;}
+function bindSound(){const b=document.getElementById('soundBtn');if(!b)return;b.onclick=()=>{soundOn=!soundOn;try{localStorage.setItem('ideakdc_sound',soundOn?'on':'off');}catch(e){}b.textContent=soundOn?'🔊 Sound ON':'🔇 Sound OFF';};}
+function startScreen(){
+  app.innerHTML=`${soundButton()}<div class="q-start"><h2 class="q-title">Reflection of Light</h2><div class="q-sub">Class 10 Science • 10 MCQ • Timer, Previous/Next, Restart</div><label class="q-toggle"><input type="checkbox" id="timerToggle" checked> Use 30-second timer</label><button class="q-btn" id="startBtn">Start Quiz</button></div>`;
+  bindSound();
+  document.getElementById('startBtn').onclick=()=>{timerOn=document.getElementById('timerToggle').checked;restart();};
+}
+function restart(){
+  clearInterval(timer);shuffleAll();idx=0;score=0;
+  selected=Array(QUESTIONS.length).fill(null);
+  locked=Array(QUESTIONS.length).fill(false);
+  paused=false;finished=false;
+  document.getElementById('quiz-card').classList.remove('hidden');
+  document.getElementById('screen-name').classList.add('hidden');
+  document.getElementById('screen-result').classList.add('hidden');
+  show();
+}
+function optionHtml(q){
+  return q.opts.map((o,i)=>`<div class="option-wrap" data-wrap="${i}"><button class="q-option" data-i="${i}"><b>${String.fromCharCode(65+i)}.</b> ${o}</button><div class="inline-feedback hidden" data-feedback="${i}"></div></div>`).join('');
+}
+function show(){
+  clearInterval(timer);paused=false;timeLeft=30;
+  let q=QUESTIONS[idx];
+  app.innerHTML=`${soundButton()}<div class="q-top"><div>Q ${idx+1}/${QUESTIONS.length}</div><div>Score: ${score}</div><div>${timerOn?'Time: <span id="time">30</span>s':'Timer Off'}</div></div><div class="q-bar-wrap" style="${timerOn?'':'display:none'}"><div class="q-bar" id="bar"></div></div><div class="q-question">${q.q}</div><div>${optionHtml(q)}</div><div class="q-note">गलत हो तो फिर से try करो. सही होने पर Next दबाओ.</div><div class="q-controls"><button class="q-btn secondary" id="prev">Previous</button><button class="q-btn secondary" id="next">Next</button><button class="q-btn" id="finish">Finish</button><button class="q-btn secondary" id="restart">Restart</button></div>`;
+  bindSound();
+  document.querySelectorAll('.q-option').forEach(b=>b.onclick=()=>pick(+b.dataset.i,b));
+  document.getElementById('prev').onclick=prev;
+  document.getElementById('next').onclick=next;
+  document.getElementById('finish').onclick=finish;
+  document.getElementById('restart').onclick=startScreen;
+  if(locked[idx]) revealCorrect(false);
+  if(timerOn&&!locked[idx]) startTimer();
+}
+function startTimer(){
+  updateTimer();
+  timer=setInterval(()=>{
+    if(paused||locked[idx])return;
+    timeLeft--;updateTimer();
+    if(timeLeft<=0){clearInterval(timer);showFloatingNote('😔 समय समाप्त! अब सही जवाब खोजो','wrong');playWrongSound();}
+  },1000);
+}
+function updateTimer(){let t=document.getElementById('time'),b=document.getElementById('bar');if(t)t.textContent=timeLeft;if(b)b.style.width=(timeLeft/30*100)+'%';}
+function clearInlineFeedback(){document.querySelectorAll('.inline-feedback').forEach(el=>{el.className='inline-feedback hidden';el.textContent='';});document.querySelectorAll('.q-option').forEach(b=>b.classList.remove('try-wrong','wrong'));}
+function showInlineFeedback(i,text,type){
+  clearInlineFeedback();
+  const fb=document.querySelector(`.inline-feedback[data-feedback="${i}"]`);
+  if(!fb)return;
+  fb.className=`inline-feedback ${type==='correct'?'correct-inline':'wrong-inline'}`;
+  fb.textContent=text;
+}
+function showFloatingNote(text,type){
+  let note=document.createElement('div');
+  note.className=`inline-feedback ${type==='correct'?'correct-inline':'wrong-inline'}`;
+  note.style.cssText='position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9998;background:rgba(15,27,45,.92);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:16px 18px;max-width:86%;';
+  note.textContent=text;
+  document.body.appendChild(note);
+  setTimeout(()=>note.remove(),1200);
+}
+function pick(i,btn){
+  if(locked[idx])return;
+  let q=QUESTIONS[idx];
+  if(i===q.ans){
+    clearInterval(timer);selected[idx]=i;locked[idx]=true;score++;
+    playCorrectSound();confetti(false);if((idx+1)%5===0)confetti(true);
+    revealCorrect(true);
+  }else{
+    selected[idx]=i;playWrongSound();
+    document.querySelectorAll('.q-option').forEach(x=>x.classList.remove('try-wrong','wrong'));
+    btn.classList.add('wrong','try-wrong');
+    const msg=randomNonRepeat(WRONG_MESSAGES,lastWrongMsg);lastWrongMsg=msg;
+    showInlineFeedback(i,'😔 '+msg,'wrong');
+  }
+}
+function revealCorrect(newAttempt=true){
+  let q=QUESTIONS[idx],choice=selected[idx];
+  document.querySelectorAll('.q-option').forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('correct');if(i===choice&&i!==q.ans)b.classList.add('wrong');});
+  const msg=randomNonRepeat(CORRECT_MESSAGES,lastCorrectMsg);lastCorrectMsg=msg;
+  showInlineFeedback(q.ans,'🎉 '+msg,'correct');
+}
+function next(){
+  clearInterval(timer);
+  if(!locked[idx]){showFloatingNote('पहले सही जवाब चुनो','wrong');return;}
+  if(idx<QUESTIONS.length-1){idx++;show();}else finish();
+}
+function prev(){
+  clearInterval(timer);
+  // Important: moving back from an unattempted question does not reveal anything for that question.
+  // Previous question will show feedback only if it had already been solved earlier.
+  if(idx>0){idx--;show();}
+}
+function finish(){clearInterval(timer);if(finished)return;finished=true;window.ideakdcFinish(score,QUESTIONS.length);}
+document.addEventListener('keydown',e=>{if(document.getElementById('quiz-card').classList.contains('hidden'))return;if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();});
+startScreen();
+})();
+</script>
+</body>
+  </html>
+    
