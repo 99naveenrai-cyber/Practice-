@@ -294,6 +294,42 @@
     0%,100%{ box-shadow:0 0 0 0 rgba(31,191,122,.55), 0 0 0 0 rgba(31,191,122,.0); }
     50%{ box-shadow:0 0 14px 4px rgba(31,191,122,.75), 0 0 26px 10px rgba(31,191,122,.35); }
   }
+  .dropdown.glow-attention::before,
+  .dropdown.glow-attention::after{
+    content:"";
+    position:absolute;
+    inset:-12px;
+    border-radius:24px;
+    pointer-events:none;
+    z-index:-1;
+    background:
+      radial-gradient(circle at 12% 30%, rgba(80,255,170,.95) 0 3px, transparent 4px),
+      radial-gradient(circle at 88% 20%, rgba(210,255,225,.95) 0 2px, transparent 3px),
+      radial-gradient(circle at 70% 85%, rgba(31,191,122,.9) 0 3px, transparent 4px),
+      radial-gradient(circle at 25% 82%, rgba(180,255,210,.9) 0 2px, transparent 3px);
+    animation:sparkleGreen 1s linear infinite;
+  }
+  .dropdown.glow-attention::after{
+    inset:-18px;
+    filter:blur(10px);
+    opacity:.75;
+    background:radial-gradient(circle, rgba(31,191,122,.55), transparent 68%);
+    animation:greenHalo 1.1s ease-in-out infinite;
+  }
+  .dropdown.glow-attention .dropdown-toggle{
+    border-color:#1FBF7A;
+    box-shadow:0 5px 0 #0E7D4F, 0 0 18px rgba(31,191,122,.95), 0 0 36px rgba(31,191,122,.65);
+  }
+  @keyframes sparkleGreen{
+    0%{ transform:scale(.96) rotate(0deg); opacity:.65; }
+    50%{ transform:scale(1.03) rotate(6deg); opacity:1; }
+    100%{ transform:scale(.96) rotate(12deg); opacity:.7; }
+  }
+  @keyframes greenHalo{
+    0%,100%{ transform:scale(.95); opacity:.45; }
+    50%{ transform:scale(1.08); opacity:1; }
+  }
+
   .dropdown-toggle{
     width:100%;
     padding:16px 18px;
@@ -1215,7 +1251,7 @@ function reflectionOfLightEntry(){
     type: "quiz",
     desc_hi: "वीडियो + 10 MCQ प्रैक्टिस — सही जवाब तक दोबारा कोशिश करो",
     desc_en: "Class 10 Science · Chapter 10 · Topic: Reflection of Light",
-    url: "10th/science/chapter10/reflection-of-light/"
+    url: "10th/science/chapter10/reflection-of-light/index.html"
   };
 }
 
