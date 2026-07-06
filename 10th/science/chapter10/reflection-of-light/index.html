@@ -39,4 +39,4 @@ function render(){clearInterval(timer);const q=QUESTIONS[idx];$("quizCard").inne
 $("startBtn").onclick=startQuiz;$("resultBtn").onclick=showResult;$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"🔊 Sound ON":"🔇 Sound OFF";try{localStorage.setItem("ideakdc_sound",soundOn?"on":"off")}catch(e){}};try{soundOn=localStorage.getItem("ideakdc_sound")!=="off";$("soundBtn").textContent=soundOn?"🔊 Sound ON":"🔇 Sound OFF"}catch(e){}
 </script>
 </body>
-<
+</html>
