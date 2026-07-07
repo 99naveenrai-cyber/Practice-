@@ -1,3 +1,10 @@
+#startBtn{position:relative;overflow:hidden;background:linear-gradient(135deg,#22c55e,#16a34a,#86efac);color:#04130a;box-shadow:0 0 18px rgba(34,197,94,.75),0 7px 0 #047857;animation:ideakdcStartPulse 1.8s ease-in-out infinite}
+#startBtn::before{content:"";position:absolute;inset:-45%;background:radial-gradient(circle,rgba(255,255,255,.95) 0 2px,transparent 3px),radial-gradient(circle,rgba(187,247,208,.9) 0 2px,transparent 4px);background-size:42px 42px,65px 65px;opacity:.42;animation:ideakdcStartSparkle 2.4s linear infinite;pointer-events:none}
+#startBtn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 0 35%,rgba(255,255,255,.55) 48%,transparent 62%);transform:translateX(-120%);animation:ideakdcStartShine 2.8s ease-in-out infinite;pointer-events:none}
+#startBtn:active{box-shadow:0 0 12px rgba(34,197,94,.65),0 2px 0 #047857}
+@keyframes ideakdcStartPulse{0%,100%{filter:saturate(1);box-shadow:0 0 16px rgba(34,197,94,.65),0 7px 0 #047857}50%{filter:saturate(1.25);box-shadow:0 0 30px rgba(74,222,128,.95),0 7px 0 #047857}}
+@keyframes ideakdcStartSparkle{from{transform:translate3d(0,0,0) rotate(0)}to{transform:translate3d(28px,24px,0) rotate(18deg)}}
+@keyframes ideakdcStartShine{0%,35%{transform:translateX(-120%)}70%,100%{transform:translateX(120%)}}
 .battle-btn{background:linear-gradient(135deg,#38BDF8,#2563EB);color:#fff;box-shadow:0 7px 0 #173c91}
 .battle-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
 .battle-option{border:1px solid var(--edge,#294063);border-radius:18px;padding:15px 8px;background:#1C2C48;color:var(--text,#EAF0F6);font-weight:900;font-size:18px;cursor:pointer;font-family:Poppins,system-ui,sans-serif}

@@ -244,7 +244,7 @@
     btn.className="btn battle-btn";
     btn.id="battleBtn";
     btn.type="button";
-    btn.textContent="Battle";
+    btn.textContent="आओ बैटल करें";
     actions.appendChild(btn);
     startCard.insertAdjacentHTML("afterend",battleMarkup());
     d.querySelectorAll(".battle-option").forEach(option=>option.onclick=()=>selectBattleCapacity(+option.dataset.capacity));
