@@ -288,6 +288,7 @@
   }
 </style>
 <link rel="stylesheet" href="/assets/css/practice-footer.css">
+<link rel="stylesheet" href="/assets/css/practice-certificate.css">
 </head>
 <body>
 <div class="sparkle-layer" id="sparkleLayer"></div>
@@ -634,8 +635,22 @@ function showResult() {
 
   document.getElementById('resultDetail').textContent =
     `${selectedTable} का टेबल — ${QUESTIONS_PER_ROUND} में से ${score} सही (Table of ${selectedTable} — ${score}/${QUESTIONS_PER_ROUND} correct)`;
+  if (window.IdeaKDCPracticeTools) {
+    window.IdeaKDCPracticeTools.renderResultTools({
+      target: '#result',
+      name: 'IdeaKDC Student',
+      topic: `Table of ${selectedTable} Practice`,
+      score,
+      total: QUESTIONS_PER_ROUND,
+      coins: score * 5,
+      quizUrl: 'https://practicekarlo.ideakdc.in/pahada-quiz.html',
+      askName: true,
+      showShare: true
+    });
+  }
 }
 </script>
+<script src="/assets/js/practice-certificate.js"></script>
 <script src="/assets/js/practice-config.js"></script>
 <script src="/assets/js/practice-footer.js"></script>
 </body>
