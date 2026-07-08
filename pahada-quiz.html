@@ -195,6 +195,7 @@
     grid-template-columns:1fr 1fr;
     gap:12px;
   }
+  .option-wrap{display:flex;flex-direction:column;gap:8px;min-width:0}
   .opt-btn{
     padding:16px 8px;
     border:2px solid rgba(255,255,255,.26);
@@ -213,6 +214,9 @@
   .opt-btn.correct{ background:linear-gradient(135deg,var(--leaf),#16a34a); color:#fff; border-color:#bbf7d0; box-shadow:0 0 24px rgba(62,208,160,.58); animation:answerPop .26s ease both; }
   .opt-btn.wrong{ background:linear-gradient(135deg,var(--coral),#dc2626); color:#fff; border-color:#fecaca; box-shadow:0 0 22px rgba(255,107,94,.45); animation:answerShake .24s ease both; }
   .opt-btn:disabled{ cursor:default; }
+  .inline-feedback{border-radius:14px;padding:8px 10px;font-family:'Baloo 2';font-size:clamp(15px,3.7vw,18px);font-weight:800;line-height:1.2;text-align:center;opacity:0;transform:translateY(-4px) scale(.96);animation:feedbackPop .32s ease forwards}
+  .inline-feedback.good{color:#dcfce7;background:rgba(22,163,74,.14);border:1px solid rgba(187,247,208,.46);box-shadow:0 0 18px rgba(62,208,160,.38);text-shadow:0 0 12px rgba(187,247,208,.8);animation:feedbackPop .32s ease forwards,feedbackPulse 1.1s ease-in-out infinite}
+  .inline-feedback.retry{color:#fee2e2;background:rgba(220,38,38,.14);border:1px solid rgba(254,202,202,.48);box-shadow:0 0 18px rgba(248,113,113,.34);text-shadow:0 0 12px rgba(254,202,202,.65);animation:feedbackPop .32s ease forwards,feedbackShake .32s ease .05s}
 
   #result{ display:none; text-align:center; }
   #result .mascot{ font-size:56px; }
@@ -267,6 +271,9 @@
   @keyframes pahadaGlowFloat{ from{transform:translate3d(-2%,0,0) scale(1)} to{transform:translate3d(2%,-2%,0) scale(1.05)} }
   @keyframes answerPop{ 0%{transform:scale(.98)} 60%{transform:scale(1.04)} 100%{transform:scale(1)} }
   @keyframes answerShake{ 0%,100%{transform:translateX(0)} 30%{transform:translateX(-5px)} 70%{transform:translateX(5px)} }
+  @keyframes feedbackPop{ to{opacity:1;transform:translateY(0) scale(1)} }
+  @keyframes feedbackPulse{ 0%,100%{box-shadow:0 0 14px rgba(62,208,160,.34)} 50%{box-shadow:0 0 24px rgba(62,208,160,.58)} }
+  @keyframes feedbackShake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
   @keyframes sparkleUp{ 0%{transform:translate3d(0,0,0) scale(.8) rotate(0);opacity:1} 100%{transform:translate3d(var(--spark-x),-110px,0) scale(.2) rotate(220deg);opacity:0} }
   @media(max-width:420px){
     body{padding:16px 10px 34px}
@@ -276,7 +283,7 @@
     .feedback{min-height:40px}
   }
   @media(prefers-reduced-motion:reduce){
-    body::before,body::after,.sparkle-piece,.opt-btn.correct,.opt-btn.wrong{animation:none}
+    body::before,body::after,.sparkle-piece,.opt-btn.correct,.opt-btn.wrong,.inline-feedback,.inline-feedback.good,.inline-feedback.retry{animation:none}
     .opt-btn,.feedback{transition:none}
   }
 </style>
@@ -321,6 +328,42 @@
 /* ---------- CONFIG ---------- */
 const QUESTIONS_PER_ROUND = 10;
 const TIME_PER_QUESTION = 10; // seconds
+const CORRECT_FEEDBACK = [
+  "सही है",
+  "Good Going!",
+  "वाह!",
+  "शानदार",
+  "अद्भुत",
+  "कमाल कर दिया",
+  "Outstanding!",
+  "Excellent!",
+  "बिलकुल सही जवाब",
+  "ठीक है",
+  "मिरेकल! मिरेकल!",
+  "झक्कास!",
+  "100% Correct!",
+  "अति शोभनम्!",
+  "सही तो होना ही था!"
+];
+const WRONG_FEEDBACK = [
+  "गलत है जी",
+  "दोबारा ट्राई करो",
+  "फिर से सोचो",
+  "दिमाग लगाओ",
+  "कैसे कैसे लोग आ जाते हैं",
+  "नहीं... नहीं...",
+  "गलत है",
+  "एक मौका दिया",
+  "नहीं रे!",
+  "कुछ भी!",
+  "सही नहीं है बाबा!",
+  "दिमाग का इस्तेमाल क्यों नहीं करते!",
+  "100% गलत है!",
+  "चुल्लू भर पानी दूँ!",
+  "सड़ा हुआ अंडा!",
+  "दिमाग का यूज़ कब होगा?",
+  "अंटी मंटी कांटी... अब गलत गया तो..."
+];
 
 /* ---------- STATE ---------- */
 let selectedTable = null;
@@ -330,6 +373,11 @@ let score = 0;
 let timerInterval = null;
 let timeLeft = TIME_PER_QUESTION;
 let feedbackTimer = null;
+let lastCorrectFeedback = "";
+let lastWrongFeedback = "";
+let audioCtx = null;
+let soundsReady = false;
+let soundBuffers = {};
 
 /* ---------- SETUP SCREEN: build table picker 2-20 ---------- */
 const tableGrid = document.getElementById('tableGrid');
@@ -345,6 +393,9 @@ for (let n = 2; n <= 20; n++) {
   tableGrid.appendChild(btn);
 }
 
+['pointerdown','keydown','touchstart'].forEach(evt => {
+  document.addEventListener(evt, unlockAudio, { once:true, passive:true });
+});
 document.getElementById('startBtn').addEventListener('click', startRound);
 document.getElementById('retryBtn').addEventListener('click', startRound);
 document.getElementById('changeTableBtn').addEventListener('click', () => {
@@ -405,11 +456,14 @@ function renderQuestion() {
   const grid = document.getElementById('optionsGrid');
   grid.innerHTML = '';
   q.options.forEach(opt => {
+    const wrap = document.createElement('div');
+    wrap.className = 'option-wrap';
     const btn = document.createElement('button');
     btn.className = 'opt-btn';
     btn.textContent = opt;
     btn.addEventListener('click', () => handleAnswer(opt, btn));
-    grid.appendChild(btn);
+    wrap.appendChild(btn);
+    grid.appendChild(wrap);
   });
 
   timerInterval = setInterval(() => {
@@ -422,11 +476,76 @@ function renderQuestion() {
   }, 1000);
 }
 
-function showFeedback(type, message) {
-  const feedback = document.getElementById('answerFeedback');
+function getRandomFeedback(type) {
+  const pool = type === 'correct' ? CORRECT_FEEDBACK : WRONG_FEEDBACK;
+  const previous = type === 'correct' ? lastCorrectFeedback : lastWrongFeedback;
+  let message = pool[Math.floor(Math.random() * pool.length)];
+  while (pool.length > 1 && message === previous) {
+    message = pool[Math.floor(Math.random() * pool.length)];
+  }
+  if (type === 'correct') lastCorrectFeedback = message;
+  else lastWrongFeedback = message;
+  return message;
+}
+
+function createToneBuffer(frequencies, duration) {
+  if (!audioCtx) return null;
+  const sampleRate = audioCtx.sampleRate;
+  const length = Math.max(1, Math.floor(sampleRate * duration));
+  const buffer = audioCtx.createBuffer(1, length, sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length; i++) {
+    const t = i / sampleRate;
+    const fade = Math.min(1, i / (sampleRate * .02), (length - i) / (sampleRate * .04));
+    data[i] = frequencies.reduce((sum, freq) => sum + Math.sin(2 * Math.PI * freq * t), 0) / frequencies.length * fade;
+  }
+  return buffer;
+}
+
+function preloadSounds() {
+  if (!audioCtx || soundsReady) return;
+  soundBuffers.correct = createToneBuffer([660, 880], .16);
+  soundBuffers.wrong = createToneBuffer([190, 150], .18);
+  soundBuffers.victory = createToneBuffer([523, 659, 784], .38);
+  soundsReady = true;
+}
+
+function unlockAudio() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    preloadSounds();
+  } catch(e) {}
+}
+
+function playSound(type) {
+  try {
+    unlockAudio();
+    const buffer = soundBuffers[type];
+    if (!audioCtx || !buffer) return;
+    const source = audioCtx.createBufferSource();
+    const gain = audioCtx.createGain();
+    source.buffer = buffer;
+    gain.gain.value = .3;
+    source.connect(gain);
+    gain.connect(audioCtx.destination);
+    source.start();
+  } catch(e) {}
+}
+
+function showFeedback(message, type, selectedOptionElement) {
   clearTimeout(feedbackTimer);
-  feedback.className = `feedback ${type} show`;
+  document.querySelectorAll('.inline-feedback').forEach(el => el.remove());
+  const feedback = document.createElement('div');
+  feedback.className = `inline-feedback ${type === 'correct' ? 'good' : 'retry'}`;
   feedback.textContent = message;
+  if (selectedOptionElement && selectedOptionElement.parentElement) {
+    selectedOptionElement.parentElement.appendChild(feedback);
+  } else {
+    const globalFeedback = document.getElementById('answerFeedback');
+    globalFeedback.className = `feedback ${type === 'correct' ? 'good' : 'retry'} show`;
+    globalFeedback.textContent = message;
+  }
 }
 
 function hideFeedback() {
@@ -435,9 +554,10 @@ function hideFeedback() {
   clearTimeout(feedbackTimer);
   feedback.className = 'feedback';
   feedback.textContent = '';
+  document.querySelectorAll('.inline-feedback').forEach(el => el.remove());
 }
 
-function celebrateSparkles(anchorEl) {
+function triggerCorrectEffect(anchorEl) {
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const layer = document.getElementById('sparkleLayer');
   if (!layer) return;
@@ -456,6 +576,15 @@ function celebrateSparkles(anchorEl) {
   }
 }
 
+function triggerResultEffect() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const result = document.getElementById('result');
+  const rect = result ? result.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
+  const fakeAnchor = { getBoundingClientRect: () => ({ left: rect.left + rect.width / 2 - 40, top: rect.top + 30, width: 80, height: 40 }) };
+  triggerCorrectEffect(fakeAnchor);
+  setTimeout(() => triggerCorrectEffect(fakeAnchor), 180);
+}
+
 function handleAnswer(selected, btnEl) {
   clearInterval(timerInterval);
   const q = questions[currentIndex];
@@ -467,13 +596,16 @@ function handleAnswer(selected, btnEl) {
   if (selected === q.answer) {
     score++;
     document.getElementById('scoreLabel').textContent = score;
-    showFeedback('good', `Bilkul sahi! ${q.q.replace('?', q.answer)}`);
-    celebrateSparkles(btnEl);
+    showFeedback(getRandomFeedback('correct'), 'correct', btnEl);
+    playSound('correct');
+    triggerCorrectEffect(btnEl);
   } else if (btnEl) {
     btnEl.classList.add('wrong');
-    showFeedback('retry', `Good try! Correct answer: ${q.answer}. Next one stronger.`);
+    showFeedback(getRandomFeedback('wrong'), 'wrong', btnEl);
+    playSound('wrong');
   } else {
-    showFeedback('retry', `Time up! Correct answer: ${q.answer}. Keep going.`);
+    showFeedback(getRandomFeedback('wrong'), 'wrong', null);
+    playSound('wrong');
   }
   setTimeout(() => {
     currentIndex++;
@@ -489,6 +621,8 @@ function showResult() {
   document.getElementById('game').style.display = 'none';
   document.getElementById('result').style.display = 'block';
   document.getElementById('progressFill').style.width = '100%';
+  playSound('victory');
+  triggerResultEffect();
 
   const pct = score / QUESTIONS_PER_ROUND;
   const emoji = document.getElementById('resultEmoji');
