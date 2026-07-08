@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdeaKDC Battle Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/battle-room.css">
+<style>
+:root{--bg:#0F1B2D;--card:#16233A;--edge:#294063;--gold:#FFC93C;--green:#4ADE80;--red:#F87171;--text:#EAF0F6;--muted:#AAB8D0}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -8%,#173a61 0%,var(--bg) 45%,#08111f 100%);color:var(--text);font-family:Poppins,system-ui,sans-serif;padding:18px 12px 42px}
+.admin-wrap{width:100%;max-width:920px;margin:0 auto}
+.admin-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:8px 0 18px}
+.admin-title{margin:0;color:var(--gold);font-size:clamp(26px,5vw,42px);line-height:1.1}
+.admin-sub{color:var(--muted);line-height:1.55;margin:8px 0 0;max-width:680px}
+.admin-card{background:rgba(22,35,58,.96);border:1px solid var(--edge);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.32);margin-bottom:16px}
+.admin-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.admin-input{width:100%;background:#1C2C48;border:1px solid var(--edge);color:var(--text);font-size:16px;padding:14px;border-radius:14px}
+.room-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.admin-room{background:#101b2e;border:1px solid rgba(56,189,248,.22);border-radius:18px;padding:14px}
+.admin-room h3{margin:0 0 8px;color:#fff;font-size:18px}
+.admin-meta{color:var(--muted);font-size:12px;line-height:1.6;overflow:hidden;text-overflow:ellipsis}
+.danger{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;box-shadow:0 7px 0 #7f1d1d}
+.admin-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.admin-empty{color:var(--muted);font-weight:700;text-align:center;padding:24px}
+.hidden{display:none!important}
+@media(max-width:520px){.admin-row{grid-template-columns:1fr}.admin-actions .btn,.admin-row .btn{width:100%}}
+</style>
+</head>
+<body>
+<main class="admin-wrap">
+  <section class="admin-hero">
+    <div>
+      <h1 class="admin-title">IdeaKDC Battle Admin</h1>
+      <p class="admin-sub">View active battle rooms and remove rooms safely. Player profiles, coins, total score, and battle history are preserved.</p>
+    </div>
+    <a class="btn secondary" href="/">Back to Practice</a>
+  </section>
+
+  <section class="admin-card" id="loginCard">
+    <h2 class="result-title">Admin Login</h2>
+    <div class="small">Enter admin code to manage rooms.</div>
+    <div class="admin-row" style="margin-top:14px">
+      <input class="admin-input" id="adminCode" type="password" autocomplete="current-password" placeholder="Admin code">
+      <button class="btn battle-btn" id="adminLoginBtn" type="button">Open Admin</button>
+    </div>
+    <div class="battle-error" id="adminError"></div>
+  </section>
+
+  <section class="admin-card hidden" id="adminPanel">
+    <div class="admin-hero">
+      <div>
+        <h2 class="result-title">Active Rooms</h2>
+        <div class="small" id="roomCountText">0 rooms</div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn secondary" id="refreshRoomsBtn" type="button">Refresh</button>
+        <button class="btn danger" id="deleteAllRoomsBtn" type="button">Delete All Rooms</button>
+      </div>
+    </div>
+    <div id="adminRooms" class="room-grid"></div>
+  </section>
+</main>
+<script src="/assets/js/battle-admin.js"></script>
+</body>
+</html>
