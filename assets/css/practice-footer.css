@@ -1,0 +1,7 @@
+.ideakdc-practice-footer{width:100%;max-width:560px;margin:26px auto 0;text-align:center;color:#EAF0F6;font-family:Poppins,Inter,system-ui,sans-serif}
+.ideakdc-practice-brand{font-weight:900;font-size:clamp(17px,4vw,23px);line-height:1.3;color:#fff;margin-bottom:15px;text-shadow:0 0 16px rgba(255,255,255,.22)}
+.ideakdc-course-button{display:inline-flex;align-items:center;justify-content:center;width:min(100%,420px);min-height:58px;padding:15px 22px;border-radius:20px;border:2px solid rgba(255,255,255,.96);background:linear-gradient(135deg,#0b1424,#16233A 52%,#0F1B2D);color:#fff;text-decoration:none;font-size:clamp(16px,4vw,20px);font-weight:900;line-height:1.2;letter-spacing:0;box-shadow:0 0 18px rgba(255,255,255,.72),0 0 34px rgba(147,197,253,.28),inset 0 0 16px rgba(255,255,255,.08);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.ideakdc-course-button:hover{transform:translateY(-3px);border-color:#fff;box-shadow:0 0 24px rgba(255,255,255,.9),0 0 48px rgba(96,165,250,.42),inset 0 0 18px rgba(255,255,255,.12)}
+.ideakdc-course-button:active{transform:translateY(2px) scale(.98);box-shadow:0 0 14px rgba(255,255,255,.62),0 0 26px rgba(96,165,250,.26),inset 0 0 14px rgba(255,255,255,.08)}
+@media(max-width:420px){.ideakdc-practice-footer{margin-top:22px;padding:0 2px}.ideakdc-course-button{min-height:56px;border-radius:18px;padding:14px 16px}}
+@media(prefers-reduced-motion:reduce){.ideakdc-course-button{transition:none}.ideakdc-course-button:hover,.ideakdc-course-button:active{transform:none}}

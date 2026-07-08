@@ -14,6 +14,7 @@
   .sound-row{display:flex;justify-content:center;margin:-6px 0 14px}.sound-btn{background:#263a5c;color:var(--text);border:1px solid #3d557e;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.q-msg{font-size:28px!important;text-align:center;line-height:1.25;text-shadow:0 0 14px rgba(255,201,60,.65);animation:msgPop .25s ease both}.q-msg.wrong-big{color:#ff9aa0;text-shadow:0 0 14px rgba(248,113,113,.65)}.q-msg.correct-big{color:var(--gold)}@keyframes msgPop{from{transform:scale(.85);opacity:.2}to{transform:scale(1);opacity:1}}.q-option.try-wrong{animation:shake .28s ease}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}.popper-layer{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}.confetti-piece{position:fixed;width:9px;height:14px;border-radius:3px;animation:confettiFall 1.2s ease-out forwards}.big-popper{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);font-size:58px;animation:bigPop 1s ease-out forwards;text-shadow:0 0 18px rgba(255,255,255,.85)}@keyframes confettiFall{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(720deg);opacity:0}}@keyframes bigPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}30%{transform:translate(-50%,-50%) scale(1.35);opacity:1}100%{transform:translate(-50%,-70%) scale(.9);opacity:0}}
 
 </style>
+<link rel="stylesheet" href="/assets/css/practice-footer.css">
 </head>
 <body>
 <div class="wrap">
@@ -68,5 +69,7 @@ function pick(i,btn){if(locked[idx])return;let q=QUESTIONS[idx];if(i===q.ans){cl
 function revealCorrect(){let q=QUESTIONS[idx],choice=selected[idx];document.querySelectorAll('.q-option').forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('correct');if(i===choice&&i!==q.ans)b.classList.add('wrong');});const msg=randomNonRepeat(CORRECT_MESSAGES,lastCorrectMsg);lastCorrectMsg=msg;const el=document.getElementById('msg');el.className='q-msg correct-big';el.textContent='🎉 '+msg;}
 function next(){clearInterval(timer);if(!locked[idx]){document.getElementById('msg').className='q-msg wrong-big';document.getElementById('msg').textContent='पहले सही जवाब चुनो';return;}if(idx<QUESTIONS.length-1){idx++;show();}else finish();}function prev(){clearInterval(timer);if(idx>0){idx--;show();}}function pause(){if(!timerOn||locked[idx])return;paused=!paused;document.getElementById('pause').textContent=paused?'Resume':'Pause';document.getElementById('msg').textContent=paused?'Paused':'Resumed';}function finish(){clearInterval(timer);if(finished)return;finished=true;window.ideakdcFinish(score,QUESTIONS.length);}document.addEventListener('keydown',e=>{if(document.getElementById('quiz-card').classList.contains('hidden'))return;if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.code==='Space'){e.preventDefault();pause();}});startScreen();})();
 </script>
+<script src="/assets/js/practice-config.js"></script>
+<script src="/assets/js/practice-footer.js"></script>
 </body>
 </html>
