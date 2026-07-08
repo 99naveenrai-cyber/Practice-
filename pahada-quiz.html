@@ -12,6 +12,9 @@
     --coral:#FF6B5E;
     --leaf:#3ED0A0;
     --ink:#1E2A45;
+    --navy:#071120;
+    --navy-2:#0F1B2D;
+    --edge:#294063;
     --paper:#FFF9EE;
     --card:#FFFFFF;
   }
@@ -20,15 +23,39 @@
     margin:0;
     min-height:100vh;
     background:
-      radial-gradient(circle at 15% 20%, rgba(255,201,60,.35), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(62,198,255,.35), transparent 45%),
-      var(--paper);
+      radial-gradient(circle at 18% 18%, rgba(62,198,255,.22), transparent 34%),
+      radial-gradient(circle at 82% 22%, rgba(255,255,255,.12), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(62,208,160,.13), transparent 42%),
+      linear-gradient(160deg,#050b16 0%,var(--navy) 42%,var(--navy-2) 100%);
     font-family:'Nunito', sans-serif;
-    color:var(--ink);
+    color:#EAF0F6;
     display:flex;
     flex-direction:column;
     align-items:center;
     padding:20px 14px 40px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::before, body::after{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    pointer-events:none;
+    z-index:0;
+  }
+  body > :not(.sparkle-layer){ position:relative; z-index:1; }
+  body::before{
+    background:
+      radial-gradient(circle, rgba(255,255,255,.16) 0 2px, transparent 3px),
+      radial-gradient(circle, rgba(125,211,252,.18) 0 2px, transparent 4px);
+    background-size:82px 82px,130px 130px;
+    opacity:.34;
+    animation:pahadaBgDrift 18s linear infinite;
+  }
+  body::after{
+    background:radial-gradient(circle at 25% 25%, rgba(255,255,255,.16), transparent 18%),radial-gradient(circle at 74% 62%, rgba(62,198,255,.16), transparent 22%);
+    filter:blur(18px);
+    animation:pahadaGlowFloat 9s ease-in-out infinite alternate;
   }
   h1{
     font-family:'Baloo 2', sans-serif;
@@ -36,10 +63,12 @@
     font-size:clamp(24px,6vw,34px);
     margin:6px 0 2px;
     text-align:center;
+    color:#fff;
+    text-shadow:0 0 18px rgba(125,211,252,.44);
   }
   .tagline{
     font-weight:600;
-    color:#5b6b8c;
+    color:#bfdbfe;
     margin-bottom:18px;
     text-align:center;
     font-size:14px;
@@ -47,11 +76,21 @@
   #setup, #game, #result{
     width:100%;
     max-width:420px;
-    background:var(--card);
+    background:linear-gradient(180deg,rgba(22,35,58,.96),rgba(10,20,36,.96));
     border-radius:22px;
     padding:22px 20px;
-    box-shadow:0 10px 0 rgba(30,42,69,.08), 0 4px 18px rgba(30,42,69,.06);
-    border:3px solid #1E2A45;
+    box-shadow:0 18px 48px rgba(0,0,0,.38),0 0 34px rgba(62,198,255,.16),inset 0 0 20px rgba(255,255,255,.04);
+    border:2px solid rgba(255,255,255,.2);
+    position:relative;
+    overflow:hidden;
+  }
+  #setup::before, #game::before, #result::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:linear-gradient(120deg,rgba(255,255,255,.1),transparent 34%,rgba(62,198,255,.08));
+    pointer-events:none;
   }
   #setup label{
     font-family:'Baloo 2';
@@ -68,14 +107,16 @@
   }
   .table-grid button{
     aspect-ratio:1;
-    border:2px solid var(--ink);
+    border:2px solid rgba(255,255,255,.24);
     border-radius:12px;
-    background:#fff;
+    background:#101b2e;
+    color:#fff;
     font-family:'Baloo 2';
     font-weight:700;
     font-size:16px;
     cursor:pointer;
-    transition:transform .1s ease;
+    transition:transform .1s ease,box-shadow .18s ease,border-color .18s ease;
+    box-shadow:0 0 14px rgba(255,255,255,.08);
   }
   .table-grid button.selected{
     background:var(--sun);
@@ -86,7 +127,7 @@
     padding:14px;
     border:none;
     border-radius:16px;
-    background:var(--coral);
+    background:linear-gradient(135deg,var(--coral),#ef4444);
     color:#fff;
     font-family:'Baloo 2';
     font-weight:700;
@@ -106,19 +147,19 @@
     font-weight:700;
     font-size:14px;
     margin-bottom:14px;
-    color:#5b6b8c;
+    color:#bfdbfe;
   }
-  .hud span b{ color:var(--ink); }
+  .hud span b{ color:#fff; }
   .progress-bar{
     height:10px;
-    background:#eef0f5;
+    background:#071120;
     border-radius:6px;
     overflow:hidden;
     margin-bottom:22px;
   }
   .progress-fill{
     height:100%;
-    background:var(--leaf);
+    background:linear-gradient(90deg,var(--leaf),var(--sky),#fff);
     width:0%;
     transition:width .3s ease;
   }
@@ -127,8 +168,28 @@
     font-weight:800;
     font-size:clamp(30px,9vw,42px);
     text-align:center;
-    margin:10px 0 24px;
+    margin:10px 0 18px;
+    color:#fff;
+    text-shadow:0 0 18px rgba(62,198,255,.35);
   }
+  .feedback{
+    min-height:42px;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#bfdbfe;
+    font-family:'Baloo 2';
+    font-weight:800;
+    font-size:clamp(16px,4vw,20px);
+    opacity:0;
+    transform:translateY(8px) scale(.98);
+    transition:opacity .22s ease,transform .22s ease;
+  }
+  .feedback.show{ opacity:1; transform:translateY(0) scale(1); }
+  .feedback.good{ color:#bbf7d0; text-shadow:0 0 16px rgba(62,208,160,.78); }
+  .feedback.retry{ color:#fed7aa; text-shadow:0 0 16px rgba(255,201,60,.55); }
   .options{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -136,17 +197,21 @@
   }
   .opt-btn{
     padding:16px 8px;
-    border:2px solid var(--ink);
+    border:2px solid rgba(255,255,255,.26);
     border-radius:16px;
-    background:#fff;
+    background:linear-gradient(180deg,#16233A,#101b2e);
+    color:#fff;
     font-family:'Baloo 2';
     font-weight:700;
     font-size:20px;
     cursor:pointer;
-    border-bottom:4px solid #1E2A45;
+    border-bottom:4px solid #071120;
+    box-shadow:0 0 16px rgba(255,255,255,.08);
+    transition:transform .12s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;
   }
-  .opt-btn.correct{ background:var(--leaf); color:#fff; }
-  .opt-btn.wrong{ background:var(--coral); color:#fff; }
+  .opt-btn:hover{ transform:translateY(-2px); box-shadow:0 0 22px rgba(125,211,252,.24); }
+  .opt-btn.correct{ background:linear-gradient(135deg,var(--leaf),#16a34a); color:#fff; border-color:#bbf7d0; box-shadow:0 0 24px rgba(62,208,160,.58); animation:answerPop .26s ease both; }
+  .opt-btn.wrong{ background:linear-gradient(135deg,var(--coral),#dc2626); color:#fff; border-color:#fecaca; box-shadow:0 0 22px rgba(255,107,94,.45); animation:answerShake .24s ease both; }
   .opt-btn:disabled{ cursor:default; }
 
   #result{ display:none; text-align:center; }
@@ -180,7 +245,7 @@
   }
   .tagline .en, footer .en-sub{
     font-size:.9em;
-    color:#9aa4bb;
+    color:#bfdbfe;
   }
   label .en-sub{
     display:block;
@@ -196,10 +261,29 @@
     font-weight:600;
     opacity:.85;
   }
+  .sparkle-layer{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:30; }
+  .sparkle-piece{ position:absolute; width:7px; height:12px; border-radius:999px; background:#fff; box-shadow:0 0 12px rgba(255,255,255,.9); animation:sparkleUp .9s ease-out forwards; }
+  @keyframes pahadaBgDrift{ from{transform:translate3d(0,0,0) rotate(0)} to{transform:translate3d(48px,36px,0) rotate(12deg)} }
+  @keyframes pahadaGlowFloat{ from{transform:translate3d(-2%,0,0) scale(1)} to{transform:translate3d(2%,-2%,0) scale(1.05)} }
+  @keyframes answerPop{ 0%{transform:scale(.98)} 60%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  @keyframes answerShake{ 0%,100%{transform:translateX(0)} 30%{transform:translateX(-5px)} 70%{transform:translateX(5px)} }
+  @keyframes sparkleUp{ 0%{transform:translate3d(0,0,0) scale(.8) rotate(0);opacity:1} 100%{transform:translate3d(var(--spark-x),-110px,0) scale(.2) rotate(220deg);opacity:0} }
+  @media(max-width:420px){
+    body{padding:16px 10px 34px}
+    #setup,#game,#result{padding:20px 14px;border-radius:20px}
+    .options{gap:10px}
+    .opt-btn{min-height:58px}
+    .feedback{min-height:40px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    body::before,body::after,.sparkle-piece,.opt-btn.correct,.opt-btn.wrong{animation:none}
+    .opt-btn,.feedback{transition:none}
+  }
 </style>
 <link rel="stylesheet" href="/assets/css/practice-footer.css">
 </head>
 <body>
+<div class="sparkle-layer" id="sparkleLayer"></div>
 
 <h1>🚀 पहाड़ा अभ्यास <span class="en">Pahada Practice</span></h1>
 <div class="tagline">अपना टेबल चुनो, टाइमर चालू, और पॉइंट्स बनाओ!<br><span class="en">Pick your table, start the timer, and earn points!</span></div>
@@ -218,6 +302,7 @@
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="question" id="questionText">7 × 3 = ?</div>
+  <div class="feedback" id="answerFeedback" aria-live="polite"></div>
   <div class="options" id="optionsGrid"></div>
 </div>
 
@@ -244,6 +329,7 @@ let currentIndex = 0;
 let score = 0;
 let timerInterval = null;
 let timeLeft = TIME_PER_QUESTION;
+let feedbackTimer = null;
 
 /* ---------- SETUP SCREEN: build table picker 2-20 ---------- */
 const tableGrid = document.getElementById('tableGrid');
@@ -306,6 +392,7 @@ function startRound() {
 
 function renderQuestion() {
   clearInterval(timerInterval);
+  hideFeedback();
   timeLeft = TIME_PER_QUESTION;
   const q = questions[currentIndex];
   document.getElementById('questionText').textContent = q.q;
@@ -335,6 +422,40 @@ function renderQuestion() {
   }, 1000);
 }
 
+function showFeedback(type, message) {
+  const feedback = document.getElementById('answerFeedback');
+  clearTimeout(feedbackTimer);
+  feedback.className = `feedback ${type} show`;
+  feedback.textContent = message;
+}
+
+function hideFeedback() {
+  const feedback = document.getElementById('answerFeedback');
+  if (!feedback) return;
+  clearTimeout(feedbackTimer);
+  feedback.className = 'feedback';
+  feedback.textContent = '';
+}
+
+function celebrateSparkles(anchorEl) {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const layer = document.getElementById('sparkleLayer');
+  if (!layer) return;
+  const rect = anchorEl ? anchorEl.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
+  const colors = ['#ffffff','#bae6fd','#bbf7d0','#fde68a'];
+  for (let i = 0; i < 22; i++) {
+    const piece = document.createElement('span');
+    piece.className = 'sparkle-piece';
+    piece.style.left = `${rect.left + rect.width / 2 + (Math.random() * 72 - 36)}px`;
+    piece.style.top = `${rect.top + rect.height / 2 + (Math.random() * 24 - 12)}px`;
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.setProperty('--spark-x', `${Math.random() * 90 - 45}px`);
+    piece.style.animationDelay = `${Math.random() * .12}s`;
+    layer.appendChild(piece);
+    setTimeout(() => piece.remove(), 1000);
+  }
+}
+
 function handleAnswer(selected, btnEl) {
   clearInterval(timerInterval);
   const q = questions[currentIndex];
@@ -346,8 +467,13 @@ function handleAnswer(selected, btnEl) {
   if (selected === q.answer) {
     score++;
     document.getElementById('scoreLabel').textContent = score;
+    showFeedback('good', `Bilkul sahi! ${q.q.replace('?', q.answer)}`);
+    celebrateSparkles(btnEl);
   } else if (btnEl) {
     btnEl.classList.add('wrong');
+    showFeedback('retry', `Good try! Correct answer: ${q.answer}. Next one stronger.`);
+  } else {
+    showFeedback('retry', `Time up! Correct answer: ${q.answer}. Keep going.`);
   }
   setTimeout(() => {
     currentIndex++;
