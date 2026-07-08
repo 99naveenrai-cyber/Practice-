@@ -1235,7 +1235,7 @@ const SENIOR_CLASSES = [11,12];
 
 const DATA = {
   5:  { math: [ pahadaEntry() ] },
-  6:  { math: [ pahadaEntry() ] },
+  6:  { math: [ pahadaEntry() ], sst: [ statesCapitalsEntry() ] },
   7:  { math: [ pahadaEntry() ] },
   8:  { math: [ pahadaEntry() ] },
   9:  {},
@@ -1263,6 +1263,17 @@ function pahadaEntry(){
     desc_hi: "टेबल 2 से 20 तक — टाइमर के साथ अभ्यास करो",
     desc_en: "Multiplication tables 2–20 with a timer",
     url: "pahada-quiz.html"
+  };
+}
+
+function statesCapitalsEntry(){
+  return {
+    title_hi: "भारत के राज्य और राजधानियाँ",
+    title_en: "Indian States and Capitals 2026",
+    type: "quiz",
+    desc_hi: "वीडियो + 3 level quiz - राज्यों और राजधानियों की practice",
+    desc_en: "Class 6 SST - 3 levels, 10 questions each",
+    url: "6th/sst/indian-states-capitals/"
   };
 }
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Indian States and Capitals 2026 Quiz | IdeaKDC</title>
+<link rel="stylesheet" href="/assets/css/practice-footer.css">
+<style>
+  :root{
+    --bg:#061225;--card:#0b1e3a;--card2:#102a52;--text:#eef7ff;--muted:#b8d5ff;--accent:#38bdf8;--gold:#ffd166;--green:#22c55e;--red:#ef4444;--pink:#ff4fd8;--blue:#3b82f6;
+  }
+  *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Noto Sans Devanagari,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at top,#143b73 0,#061225 45%,#030914 100%);min-height:100vh;overflow-x:hidden}
+  body:before{content:"";position:fixed;inset:0;background:linear-gradient(120deg,transparent,rgba(56,189,248,.08),transparent);animation:shine 6s linear infinite;pointer-events:none}@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+  .wrap{width:min(980px,94vw);margin:auto;padding:18px 0 28px}.brand{text-align:center;padding:14px 10px 8px}.brand h1{margin:0;font-size:clamp(28px,6vw,54px);letter-spacing:.5px;text-shadow:0 0 18px #38bdf8,0 0 36px #2563eb}.brand p{margin:8px 0 0;color:var(--muted);font-size:clamp(15px,3vw,20px)}
+  .sparkle{animation:sparkle 1.8s infinite alternate}@keyframes sparkle{0%{text-shadow:0 0 10px #fff,0 0 20px #38bdf8}100%{text-shadow:0 0 18px #fff,0 0 34px #ffd166,0 0 48px #38bdf8}}
+  .videoBox{position:relative;width:100%;aspect-ratio:16/9;border-radius:22px;overflow:hidden;border:2px solid rgba(56,189,248,.6);box-shadow:0 0 25px rgba(56,189,248,.35);background:#000}.videoBox iframe{width:100%;height:100%;border:0}.ytFallback{display:inline-block;margin:12px auto 18px;padding:11px 16px;border-radius:999px;background:#102a52;color:#fff;text-decoration:none;border:1px solid #38bdf8;box-shadow:0 0 14px rgba(56,189,248,.45)}
+  .card{background:linear-gradient(145deg,rgba(16,42,82,.96),rgba(5,18,39,.96));border:1px solid rgba(148,204,255,.25);border-radius:24px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.35), inset 0 0 30px rgba(56,189,248,.07);margin:14px 0}.center{text-align:center}.btn{border:0;border-radius:16px;padding:14px 20px;margin:8px;cursor:pointer;font-weight:800;font-size:17px;color:#031225;background:linear-gradient(135deg,#7dd3fc,#22d3ee);box-shadow:0 0 18px rgba(56,189,248,.5);transition:.2s}.btn:hover{transform:translateY(-2px) scale(1.02)}.btn.secondary{background:linear-gradient(135deg,#e5e7eb,#fff);box-shadow:0 0 18px rgba(255,255,255,.45)}.btn.gold{background:linear-gradient(135deg,#ffe08a,#fbbf24)}.btn.green{background:linear-gradient(135deg,#86efac,#22c55e)}.btn.red{background:linear-gradient(135deg,#fca5a5,#ef4444);color:#fff}.btn.pink{background:linear-gradient(135deg,#f9a8d4,#ec4899);color:#fff}.btn.blue{background:linear-gradient(135deg,#93c5fd,#3b82f6);color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .hud{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}.pill{padding:10px 13px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-weight:700;color:#eaf6ff}.q{font-size:clamp(22px,4.6vw,34px);line-height:1.35;margin:12px 0 18px;font-weight:900}.options{display:grid;gap:12px}.opt{position:relative;text-align:left;width:100%;border:2px solid rgba(184,213,255,.25);background:rgba(3,13,30,.7);color:#fff;border-radius:18px;padding:16px;font-size:clamp(16px,3.6vw,21px);cursor:pointer;transition:.2s}.opt:hover{border-color:#38bdf8;box-shadow:0 0 16px rgba(56,189,248,.35)}.opt.correct{border-color:#22c55e;background:rgba(34,197,94,.16);box-shadow:0 0 26px rgba(34,197,94,.55)}.opt.wrong{border-color:#ef4444;background:rgba(239,68,68,.16);box-shadow:0 0 20px rgba(239,68,68,.4)}.feedback{font-size:clamp(25px,5vw,42px);font-weight:1000;margin:9px 0 2px;text-align:center}.feedback.good{color:#b7ffce;text-shadow:0 0 12px #22c55e,0 0 30px #22c55e}.feedback.bad{color:#ffd0d0;text-shadow:0 0 12px #ef4444,0 0 26px #ef4444}.gate{font-size:clamp(28px,6vw,48px);font-weight:1000;text-align:center;color:#ffe08a;text-shadow:0 0 16px #f59e0b;margin:14px 0;min-height:52px}.levelGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.levelCard{border-radius:20px;padding:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13)}
+  .shareRow{display:flex;justify-content:center;flex-wrap:wrap}.coins{font-size:36px;color:var(--gold);font-weight:1000;text-shadow:0 0 18px #fbbf24}.footer{text-align:center;margin-top:20px;color:#dceeff;font-weight:800}.footer a{color:#fff;text-decoration:none;display:inline-block;margin-top:8px;padding:10px 18px;border-radius:999px;border:1px solid #fff;box-shadow:0 0 18px rgba(255,255,255,.75);animation:pulse 1.6s infinite alternate}@keyframes pulse{to{box-shadow:0 0 28px rgba(255,255,255,1);transform:scale(1.02)}}.hide{display:none!important}
+  .confetti{position:fixed;width:10px;height:14px;bottom:-20px;left:50%;z-index:99;border-radius:3px;animation:popUp 1.3s ease-out forwards}@keyframes popUp{to{transform:translate(var(--x),-105vh) rotate(720deg);opacity:0}}
+  @media(max-width:720px){.levelGrid{grid-template-columns:1fr}.card{padding:16px}.btn{width:100%;margin:7px 0}.hud{justify-content:center}.shareRow .btn{width:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand"><h1 class="sparkle">IDEAKDC</h1><p>Indian States & Capitals 2026 | भारत के राज्य और राजधानियाँ</p></header>
+  <div class="videoBox"><iframe src="https://www.youtube.com/embed/7br0lkp3eJY" title="States and Capitals 2026" allowfullscreen></iframe></div>
+  <div class="center"><a class="ytFallback" href="https://youtu.be/7br0lkp3eJY?feature=shared" target="_blank">Video नहीं दिख रहा? YouTube पर खोलो</a></div>
+
+  <section id="start" class="card center">
+    <h2>Start Quiz Game</h2><p>3 Levels • 10 Questions Each • सही जवाब के बाद ही Next खुलेगा।</p>
+    <div class="levelGrid"><div class="levelCard"><h3>Level 1</h3><p>Easy पहचान</p></div><div class="levelCard"><h3>Level 2</h3><p>Medium recall</p></div><div class="levelCard"><h3>Level 3</h3><p>Exam challenge</p></div></div>
+    <button class="btn gold" onclick="startLevel(0)">Start Level 1</button><button class="btn secondary" onclick="toggleSound()" id="soundStart">Sound: ON</button>
+  </section>
+
+  <section id="quiz" class="card hide">
+    <div class="hud"><span class="pill" id="levelPill"></span><span class="pill" id="qPill"></span><span class="pill" id="scorePill"></span><span class="pill" id="soundPill" onclick="toggleSound()">🔊 Sound ON</span></div>
+    <div class="q" id="question"></div><div class="options" id="options"></div><div id="gate" class="gate"></div>
+    <div class="center"><button class="btn secondary" onclick="prevQ()">Previous</button><button class="btn" onclick="nextQ()" id="nextBtn">Next</button><button class="btn red" onclick="restartAll()">Restart</button><button class="btn secondary" onclick="goHome()">Home</button></div>
+  </section>
+
+  <section id="levelEnd" class="card center hide"><h2 id="levelEndTitle"></h2><p id="levelEndText"></p><div class="coins" id="levelCoins"></div><button class="btn green" id="nextLevelBtn" onclick="goNextLevel()">Go to Next Level</button><button class="btn gold" onclick="showFinal(true)">Finish</button><button class="btn red" onclick="restartAll()">Restart</button></section>
+
+  <section id="result" class="card center hide"><h2>Result Time 🎉</h2><p>अपना नाम लिखो:</p><input id="studentName" placeholder="Student Name" style="width:min(420px,96%);padding:15px;border-radius:14px;border:2px solid #38bdf8;background:#07162d;color:#fff;font-size:18px;text-align:center" /> <button class="btn gold" onclick="makeResult()">Show My Result</button><div id="finalBox"></div></section>
+  <footer class="footer"><div class="sparkle">ideaKDC: Your Practice Mitra</div><a href="https://practicekarlo.ideakdc.in">practicekarlo.ideakdc.in</a></footer>
+</div>
+<script>
+const quizTitle="Indian States and Capitals 2026 Quiz | भारत के राज्य और राजधानियाँ";
+const publicQuizLink="https://practicekarlo.ideakdc.in/6th/sst/indian-states-capitals/";
+const correctMsgs=["सही है","Good Going!","Wah!","शानदार","अद्भुत","कमाल कर दिया","Outstanding!","Excellent!","बिलकुल सही जवाब","ठीक है","Miracle Miracle!","झक्कास","100% correct","अति शोभनम्","सही तो होना ही था"];
+const wrongMsgs=["गलत है जी","दोबारा ट्राई करो","फिर से सोचो","दिमाग लगाओ","कैसे कैसे लोग आ जाते हैं","नहीं... नहीं...","गलत है","एक मौका दिया","नहीं रे","कुछ भी!","सही नहीं है बाबा","दिमाग का इस्तेमाल क्यों नहीं करते!","100% गलत है","चुल्लू भर पानी दूँ!","सड़ा हुआ अंडा!","दिमाग का use कब होगा","अंटी मंटी कंटी..अब गलत गया तो..."];
+let lastGood='',lastBad='',soundOn=true,currentLevel=0,currentQ=0,totalCorrect=0,levelCorrect=[0,0,0],answered=[];
+const levels=[
+[
+{q:"बिहार की राजधानी क्या है? / What is the capital of Bihar?",a:"Patna / पटना",o:["Ranchi / राँची","Lucknow / लखनऊ","Bhopal / भोपाल"]},
+{q:"राजस्थान की राजधानी क्या है? / What is the capital of Rajasthan?",a:"Jaipur / जयपुर",o:["Jodhpur / जोधपुर","Udaipur / उदयपुर","Ajmer / अजमेर"]},
+{q:"गुजरात की राजधानी क्या है? / What is the capital of Gujarat?",a:"Gandhinagar / गांधीनगर",o:["Ahmedabad / अहमदाबाद","Surat / सूरत","Vadodara / वडोदरा"]},
+{q:"महाराष्ट्र की राजधानी क्या है? / What is the capital of Maharashtra?",a:"Mumbai / मुंबई",o:["Pune / पुणे","Nagpur / नागपुर","Nashik / नासिक"]},
+{q:"कर्नाटक की राजधानी क्या है? / What is the capital of Karnataka?",a:"Bengaluru / बेंगलुरु",o:["Mysuru / मैसूरु","Mangaluru / मंगलुरु","Hubballi / हुब्बल्ली"]},
+{q:"केरल की राजधानी क्या है? / What is the capital of Kerala?",a:"Thiruvananthapuram / तिरुवनंतपुरम",o:["Kochi / कोच्चि","Kozhikode / कोझिकोड","Kannur / कन्नूर"]},
+{q:"ओडिशा की राजधानी क्या है? / What is the capital of Odisha?",a:"Bhubaneswar / भुवनेश्वर",o:["Cuttack / कटक","Puri / पुरी","Rourkela / राउरकेला"]},
+{q:"पंजाब की राजधानी क्या है? / What is the capital of Punjab?",a:"Chandigarh / चंडीगढ़",o:["Amritsar / अमृतसर","Ludhiana / लुधियाना","Patiala / पटियाला"]},
+{q:"हरियाणा की राजधानी क्या है? / What is the capital of Haryana?",a:"Chandigarh / चंडीगढ़",o:["Gurugram / गुरुग्राम","Faridabad / फरीदाबाद","Hisar / हिसार"]},
+{q:"पश्चिम बंगाल की राजधानी क्या है? / What is the capital of West Bengal?",a:"Kolkata / कोलकाता",o:["Siliguri / सिलीगुड़ी","Howrah / हावड़ा","Durgapur / दुर्गापुर"]}
+],
+[
+{q:"आंध्र प्रदेश की राजधानी क्या है? / What is the capital of Andhra Pradesh?",a:"Amaravati / अमरावती",o:["Vijayawada / विजयवाड़ा","Visakhapatnam / विशाखापट्टनम","Hyderabad / हैदराबाद"]},
+{q:"तेलंगाना की राजधानी क्या है? / What is the capital of Telangana?",a:"Hyderabad / हैदराबाद",o:["Warangal / वारंगल","Nizamabad / निजामाबाद","Karimnagar / करीमनगर"]},
+{q:"तमिलनाडु की राजधानी क्या है? / What is the capital of Tamil Nadu?",a:"Chennai / चेन्नई",o:["Madurai / मदुरै","Coimbatore / कोयंबटूर","Salem / सलेम"]},
+{q:"उत्तर प्रदेश की राजधानी क्या है? / What is the capital of Uttar Pradesh?",a:"Lucknow / लखनऊ",o:["Kanpur / कानपुर","Varanasi / वाराणसी","Prayagraj / प्रयागराज"]},
+{q:"मध्य प्रदेश की राजधानी क्या है? / What is the capital of Madhya Pradesh?",a:"Bhopal / भोपाल",o:["Indore / इंदौर","Gwalior / ग्वालियर","Jabalpur / जबलपुर"]},
+{q:"छत्तीसगढ़ की राजधानी क्या है? / What is the capital of Chhattisgarh?",a:"Raipur / रायपुर",o:["Bilaspur / बिलासपुर","Durg / दुर्ग","Korba / कोरबा"]},
+{q:"झारखंड की राजधानी क्या है? / What is the capital of Jharkhand?",a:"Ranchi / राँची",o:["Jamshedpur / जमशेदपुर","Dhanbad / धनबाद","Bokaro / बोकारो"]},
+{q:"गोवा की राजधानी क्या है? / What is the capital of Goa?",a:"Panaji / पणजी",o:["Margao / मडगाँव","Vasco da Gama / वास्को द गामा","Mapusa / मापुसा"]},
+{q:"हिमाचल प्रदेश की राजधानी क्या है? / What is the capital of Himachal Pradesh?",a:"Shimla / शिमला",o:["Dharamshala / धर्मशाला","Mandi / मंडी","Kullu / कुल्लू"]},
+{q:"उत्तराखंड की राजधानी क्या है? / What is the capital of Uttarakhand?",a:"Dehradun / देहरादून",o:["Nainital / नैनीताल","Haridwar / हरिद्वार","Haldwani / हल्द्वानी"]}
+],
+[
+{q:"अरुणाचल प्रदेश की राजधानी क्या है? / What is the capital of Arunachal Pradesh?",a:"Itanagar / ईटानगर",o:["Tawang / तवांग","Pasighat / पासीघाट","Ziro / ज़ीरो"]},
+{q:"असम की राजधानी क्या है? / What is the capital of Assam?",a:"Dispur / दिसपुर",o:["Guwahati / गुवाहाटी","Dibrugarh / डिब्रूगढ़","Silchar / सिलचर"]},
+{q:"मणिपुर की राजधानी क्या है? / What is the capital of Manipur?",a:"Imphal / इंफाल",o:["Ukhrul / उखरूल","Bishnupur / बिष्णुपुर","Churachandpur / चुराचांदपुर"]},
+{q:"मेघालय की राजधानी क्या है? / What is the capital of Meghalaya?",a:"Shillong / शिलांग",o:["Tura / तुरा","Jowai / जोवाई","Nongpoh / नोंगपोह"]},
+{q:"मिजोरम की राजधानी क्या है? / What is the capital of Mizoram?",a:"Aizawl / आइजोल",o:["Lunglei / लुंगलेई","Champhai / चम्फाई","Kolasib / कोलासिब"]},
+{q:"नागालैंड की राजधानी क्या है? / What is the capital of Nagaland?",a:"Kohima / कोहिमा",o:["Dimapur / दीमापुर","Mokokchung / मोकोकचुंग","Tuensang / तुएनसांग"]},
+{q:"सिक्किम की राजधानी क्या है? / What is the capital of Sikkim?",a:"Gangtok / गंगटोक",o:["Namchi / नामची","Gyalshing / ग्यालशिंग","Mangan / मंगन"]},
+{q:"त्रिपुरा की राजधानी क्या है? / What is the capital of Tripura?",a:"Agartala / अगरतला",o:["Udaipur / उदयपुर","Dharmanagar / धर्मनगर","Kailashahar / कैलाशहर"]},
+{q:"अरुणाचल, असम, मणिपुर जैसी states किस region में आती हैं? / These states mainly belong to which region?",a:"North-East India / उत्तर-पूर्व भारत",o:["Western India / पश्चिम भारत","Central India / मध्य भारत","Southern India / दक्षिण भारत"]},
+{q:"चंडीगढ़ किस दो राज्यों की राजधानी है? / Chandigarh is capital of which two states?",a:"Punjab and Haryana / पंजाब और हरियाणा",o:["Punjab and Rajasthan / पंजाब और राजस्थान","Haryana and Himachal Pradesh / हरियाणा और हिमाचल","Delhi and Haryana / दिल्ली और हरियाणा"]}
+]];
+function $(id){return document.getElementById(id)} function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function pick(arr,last){let m;do{m=arr[Math.floor(Math.random()*arr.length)]}while(m===last&&arr.length>1);return m}
+function startLevel(i){currentLevel=i;currentQ=0;answered=Array(10).fill(false);$('start').classList.add('hide');$('levelEnd').classList.add('hide');$('result').classList.add('hide');$('quiz').classList.remove('hide');renderQ()}
+function renderQ(){const item=levels[currentLevel][currentQ];$('levelPill').textContent=`Level ${currentLevel+1}`;$('qPill').textContent=`Question ${currentQ+1}/10`;$('scorePill').textContent=`Score ${totalCorrect}/30`;$('question').textContent=item.q;$('gate').textContent='';const ops=shuffle([item.a,...item.o]);$('options').innerHTML='';ops.forEach((op,idx)=>{let b=document.createElement('button');b.className='opt';b.innerHTML=`<b>${String.fromCharCode(65+idx)}.</b> ${op}<div class="fbhere"></div>`;b.onclick=()=>choose(b,op,item.a);$('options').appendChild(b)});$('nextBtn').textContent=currentQ===9?'Finish Level':'Next'}
+function choose(btn,op,ans){document.querySelectorAll('.opt').forEach(x=>{x.classList.remove('wrong','correct');x.querySelector('.fbhere').innerHTML=''}) ; if(op===ans){btn.classList.add('correct');let msg=pick(correctMsgs,lastGood);lastGood=msg;btn.querySelector('.fbhere').innerHTML=`<div class="feedback good">${msg}</div>`;if(!answered[currentQ]){answered[currentQ]=true;totalCorrect++;levelCorrect[currentLevel]++;smallConfetti(); if((totalCorrect%5)===0) bigConfetti();} beep('good');}else{btn.classList.add('wrong');let msg=pick(wrongMsgs,lastBad);lastBad=msg;btn.querySelector('.fbhere').innerHTML=`<div class="feedback bad">😢 ${msg}</div>`;beep('bad');}}
+function nextQ(){if(!answered[currentQ]){$('gate').textContent='मुझे इसका जवाब चाहिए';beep('bad');return} if(currentQ<9){currentQ++;renderQ()}else endLevel()}
+function prevQ(){if(currentQ>0){currentQ--;renderQ()}}
+function endLevel(){$('quiz').classList.add('hide');$('levelEnd').classList.remove('hide');$('levelEndTitle').textContent=`Level ${currentLevel+1} Complete!`;$('levelEndText').textContent=`इस level में सही जवाब: ${levelCorrect[currentLevel]}/10`;$('levelCoins').textContent=`🪙 Coins: ${levelCorrect[currentLevel]*5}`;$('nextLevelBtn').style.display=currentLevel<2?'inline-block':'none';bigConfetti();beep('victory')}
+function goNextLevel(){if(currentLevel<2)startLevel(currentLevel+1)}
+function showFinal(){ $('levelEnd').classList.add('hide');$('quiz').classList.add('hide');$('result').classList.remove('hide'); }
+function makeResult(){let name=$('studentName').value.trim()||'Champion';let coins=totalCorrect*5;let comment= totalCorrect>=25?'Outstanding! तुम्हारी तैयारी टॉपर जैसी है।': totalCorrect>=18?'Very Good! Revision करोगे तो full marks आएगा।':'Good start! अब capitals रोज 10 मिनट revise करो।';let link=publicQuizLink;let msg=`${name}: ${totalCorrect}/30 | Coins: ${coins}\n${quizTitle}\n${link}`;$('finalBox').innerHTML=`<h2>${name}, ${comment}</h2><p style="font-size:24px;font-weight:900">Score: ${totalCorrect}/30</p><div class="coins">🪙 ${coins} Coins</div><div class="shareRow"><button class="btn green" onclick="shareWA('${encodeURIComponent(msg)}')">WhatsApp Share</button><button class="btn green" onclick="shareWA('${encodeURIComponent(msg)}')">WhatsApp Status</button><button class="btn blue" onclick="openShare('https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}')">Facebook</button><button class="btn pink" onclick="copyText('${encodeURIComponent(msg)}')">Instagram</button><button class="btn pink" onclick="copyText('${encodeURIComponent(msg)}')">Instagram Story</button><button class="btn secondary" onclick="copyText('${encodeURIComponent(link)}')">Copy Link</button></div>`;bigConfetti();beep('victory')}
+function shareWA(m){openShare('https://wa.me/?text='+m)} function openShare(u){window.open(u,'_blank')} function copyText(t){navigator.clipboard.writeText(decodeURIComponent(t));alert('Copied!')}
+function goHome(){location.href='https://practicekarlo.ideakdc.in'} function restartAll(){totalCorrect=0;levelCorrect=[0,0,0];currentLevel=0;startLevel(0)}
+function toggleSound(){soundOn=!soundOn;$('soundPill').textContent=soundOn?'🔊 Sound ON':'🔇 Sound OFF';$('soundStart').textContent=soundOn?'Sound: ON':'Sound: OFF'}
+function beep(type){if(!soundOn)return;let ac=new (window.AudioContext||window.webkitAudioContext)(),o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=type==='good'?660:type==='victory'?880:180;g.gain.value=.045;o.type='sine';o.start();g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+(type==='victory'?.45:.22));o.stop(ac.currentTime+(type==='victory'?.45:.22))}
+function smallConfetti(){confetti(24)} function bigConfetti(){confetti(90)} function confetti(n){for(let i=0;i<n;i++){let d=document.createElement('div');d.className='confetti';d.style.left=(Math.random()*100)+'vw';d.style.background=['#22c55e','#38bdf8','#ffd166','#ec4899','#fff'][Math.floor(Math.random()*5)];d.style.setProperty('--x',(Math.random()*420-210)+'px');d.style.animationDuration=(.8+Math.random()*1.2)+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}}
+ </script>
+<script src="/assets/js/practice-config.js"></script>
+<script src="/assets/js/practice-footer.js"></script>
+</body>
+</html>
