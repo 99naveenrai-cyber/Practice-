@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basics of Pythagoras | IdeaKDC Practice Mitra</title>
+  <style>
+    :root{--bg:#050d22;--bg2:#071a3a;--card:#0b2355;--card2:#102f70;--cyan:#74eaff;--gold:#ffd166;--green:#39ff96;--red:#ff5d7d;--pink:#ff62d2;--blue:#4da3ff;--white:#f7fbff;}
+    *{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Devanagari",Arial,sans-serif;color:var(--white);background:radial-gradient(circle at top,#123b82 0,#061833 38%,#030816 100%);}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,rgba(116,234,255,.14),transparent 25%),radial-gradient(circle at 80% 0,rgba(255,209,102,.13),transparent 25%);animation:pulse 5s infinite alternate;}
+    @keyframes pulse{from{opacity:.45}to{opacity:.95}} .wrap{position:relative;z-index:1;max-width:960px;margin:auto;padding:18px 14px 36px}.brand{text-align:center;padding:14px;border:1px solid rgba(116,234,255,.3);border-radius:24px;background:linear-gradient(135deg,rgba(13,40,95,.85),rgba(5,13,34,.92));box-shadow:0 0 28px rgba(116,234,255,.16)}
+    .brand h1{margin:0;font-size:clamp(26px,6vw,48px);letter-spacing:.5px;color:var(--cyan);text-shadow:0 0 16px rgba(116,234,255,.8)}.brand p{margin:6px 0 0;color:#dbe9ff;font-weight:700}.video{margin:18px 0;border-radius:22px;overflow:hidden;border:2px solid rgba(255,209,102,.35);box-shadow:0 0 28px rgba(255,209,102,.16);background:#000}.video-inner{position:relative;width:100%;padding-top:56.25%}.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.ytbtn{display:block;text-align:center;margin:10px auto 18px;width:max-content;max-width:100%;padding:11px 16px;border-radius:999px;background:#102f70;color:white;text-decoration:none;border:1px solid rgba(116,234,255,.35);font-weight:800}.card{background:linear-gradient(145deg,rgba(16,47,112,.94),rgba(7,24,58,.96));border:1px solid rgba(116,234,255,.24);border-radius:26px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.28)}
+    .center{text-align:center}.title{font-size:clamp(23px,5vw,40px);margin:6px 0 10px;color:var(--gold)}.sub{color:#d6e8ff;font-size:18px}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}.btn{border:0;border-radius:16px;padding:13px 18px;margin:6px;font-size:17px;font-weight:900;cursor:pointer;color:white;background:linear-gradient(135deg,#1e73ff,#0bb7ff);box-shadow:0 0 18px rgba(116,234,255,.35);transition:.18s}.btn:hover{transform:translateY(-2px) scale(1.02)}.btn.gold{background:linear-gradient(135deg,#ffb703,#fb8500);color:#08142c}.btn.green{background:linear-gradient(135deg,#12c66a,#39ff96);color:#041124}.btn.red{background:linear-gradient(135deg,#ff416c,#ff5d7d)}.btn.ghost{background:#071a3a;border:1px solid rgba(255,255,255,.22)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.medium-btn{min-width:220px;font-size:20px;padding:18px}.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.pill{padding:9px 12px;border-radius:999px;background:rgba(3,8,22,.55);border:1px solid rgba(116,234,255,.22);font-weight:800}.question{font-size:clamp(23px,5.5vw,38px);line-height:1.28;margin:16px 0;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.12)}.options{display:grid;gap:12px}.option{width:100%;text-align:left;background:#081b44;color:white;border:2px solid rgba(116,234,255,.24);border-radius:18px;padding:15px 14px;font-size:clamp(18px,4.2vw,26px);font-weight:800;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}.option:hover{border-color:var(--cyan);box-shadow:0 0 18px rgba(116,234,255,.2)}.option.correct{border-color:var(--green);background:rgba(20,115,62,.45);box-shadow:0 0 24px rgba(57,255,150,.55)}.option.wrong{border-color:var(--red);background:rgba(126,20,45,.45);box-shadow:0 0 22px rgba(255,93,125,.45)}.feedback{min-height:42px;margin:12px 0 2px;font-size:clamp(26px,6vw,42px);font-weight:1000;text-align:center}.feedback.good{color:var(--green);text-shadow:0 0 18px rgba(57,255,150,.85)}.feedback.bad{color:var(--red);text-shadow:0 0 18px rgba(255,93,125,.75)}.need{color:var(--gold);font-size:clamp(28px,7vw,46px);font-weight:1000;text-align:center;text-shadow:0 0 14px rgba(255,209,102,.75)}.hide{display:none!important}.namebox{font-size:20px;padding:14px;border-radius:14px;border:2px solid rgba(116,234,255,.5);background:#061833;color:white;max-width:350px;width:100%;text-align:center}.score{font-size:clamp(28px,7vw,52px);font-weight:1000;color:var(--gold);text-shadow:0 0 18px rgba(255,209,102,.75)}.share a,.share button{display:inline-block;text-decoration:none;border:0;border-radius:14px;padding:12px 14px;margin:6px;color:white;font-weight:900;cursor:pointer}.wa{background:#10b957;box-shadow:0 0 18px rgba(16,185,87,.75)}.fb{background:#1877f2;box-shadow:0 0 18px rgba(24,119,242,.75)}.ig{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);box-shadow:0 0 18px rgba(255,98,210,.75)}.copy{background:#334155;box-shadow:0 0 15px rgba(255,255,255,.25)}.footer{text-align:center;margin-top:22px;color:#e7f5ff;font-weight:900;line-height:1.7}.footer a{color:var(--cyan)}.spark{position:fixed;width:8px;height:14px;border-radius:20px;pointer-events:none;z-index:99;animation:fly 1.2s ease-out forwards}.bigSpark{width:12px;height:20px;animation:fly 1.8s ease-out forwards}@keyframes fly{0%{transform:translateY(0) scale(.7);opacity:1}100%{transform:translateY(-75vh) rotate(540deg) scale(1.2);opacity:0}}@media(max-width:560px){.wrap{padding:10px}.card{padding:15px;border-radius:20px}.topbar{justify-content:center}.btn{width:100%;margin:5px 0}.medium-btn{width:100%}}
+  </style>
+  <link rel="stylesheet" href="/assets/css/battle-room.css">
+  <link rel="stylesheet" href="/assets/css/practice-footer.css">
+  <link rel="stylesheet" href="/assets/css/practice-certificate.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="brand"><h1>IDEAKDC</h1><p>Practice Mitra • Pythagoras Basics Quiz</p></header>
+  <section class="video"><div class="video-inner"><iframe src="https://www.youtube.com/embed/zZN9V5Cgxgs" title="Pythagoras YouTube Short" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>
+  <a class="ytbtn" href="https://youtube.com/shorts/zZN9V5Cgxgs?si=MGCpyEkwmGmfsM2G" target="_blank" rel="noopener">Video नहीं दिख रहा? YouTube पर खोलो</a>
+
+  <main id="start" class="card center">
+    <h2 class="title">Basics of Pythagoras</h2>
+    <p class="sub">Choose your medium. पहले medium चुनो, फिर quiz शुरू करो.</p>
+    <div class="row">
+      <button class="btn medium-btn gold" onclick="chooseMedium('hi')">Hindi Medium</button>
+      <button class="btn medium-btn" onclick="chooseMedium('en')">English Medium</button>
+    </div>
+    <p class="sub">10 MCQ • Base, Perpendicular and Hypotenuse</p>
+  </main>
+
+  <section id="quiz" class="card hide">
+    <div class="topbar"><span class="pill" id="mediumPill">Medium</span><span class="pill" id="progress">Q 1/10</span><span class="pill" id="coins">Coins: 0</span><button class="btn ghost" id="soundBtn" onclick="toggleSound()">Sound: ON</button></div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <div id="need" class="need hide">मुझे इसका जवाब चाहिए</div>
+    <div class="row" style="margin-top:16px"><button class="btn ghost" onclick="prevQ()">Previous</button><button class="btn red" onclick="restart()">Restart</button><button class="btn green" onclick="nextQ()" id="nextBtn">Next</button></div>
+  </section>
+
+  <section id="result" class="card center hide">
+    <h2 class="title">Result</h2>
+    <p class="sub" id="askName">Student name लिखो / Enter student name</p>
+    <input class="namebox" id="studentName" placeholder="Your name" />
+    <br><button class="btn gold" onclick="showFinal()">Show Result</button>
+    <div id="finalBox" class="hide">
+      <div class="score" id="scoreText"></div>
+      <p class="sub" id="positive"></p>
+      <div class="share" id="shareBtns"></div>
+      <button class="btn red" onclick="restart()">Restart</button>
+      <button class="btn ghost" onclick="goHome()">Home</button>
+    </div>
+  </section>
+
+  <footer class="footer"><div>ideaKDC: Your Practice Mitra</div><a href="https://practicekarlo.ideakdc.in" target="_blank" rel="noopener">practicekarlo.ideakdc.in</a></footer>
+</div>
+<script>
+const VIDEO_ID='zZN9V5Cgxgs';
+const quizTitle='Basics of Pythagoras Quiz';
+const publicQuizLink='https://practicekarlo.ideakdc.in/c9-pythagoras.html';
+const correctMsgs=['सही है','Good Going!','Wah!','शानदार','अद्भुत','कमाल कर दिया','Outstanding!','Excellent!','बिलकुल सही जवाब','ठीक है','Miracle Miracle!','झक्कास','100% correct','अति शोभनम्','सही तो होना ही था'];
+const wrongMsgs=['गलत है जी','दोबारा ट्राई करो','फिर से सोचो','दिमाग लगाओ','कैसे कैसे लोग आ जाते हैं','नहीं... नहीं...','गलत है','एक मौका दिया','नहीं रे','कुछ भी!','सही नहीं है बाबा','दिमाग का इस्तेमाल क्यों नहीं करते!','100% गलत है','चुल्लू भर पानी दूँ!','सड़ा हुआ अंडा!','दिमाग का use कब होगा','Anti manti kanti..ab galat gaya to...'];
+const data={
+ hi:[
+  {q:'समकोण त्रिभुज में कर्ण किसे कहते हैं?',o:['समकोण के सामने वाली सबसे लंबी भुजा','सबसे छोटी भुजा','नीचे वाली भुजा','ऊपर वाली भुजा'],a:'समकोण के सामने वाली सबसे लंबी भुजा'},
+  {q:'पाइथागोरस प्रमेय का सही सूत्र क्या है?',o:['कर्ण² = आधार² + लंब²','आधार² = कर्ण² + लंब²','लंब² = आधार² + कर्ण²','कर्ण = आधार + लंब'],a:'कर्ण² = आधार² + लंब²'},
+  {q:'यदि आधार = 3 और लंब = 4 हो, तो कर्ण कितना होगा?',o:['5','6','7','25'],a:'5'},
+  {q:'यदि कर्ण = 13 और आधार = 5 हो, तो लंब कितना होगा?',o:['12','8','10','18'],a:'12'},
+  {q:'यदि लंब = 8 और कर्ण = 10 हो, तो आधार कितना होगा?',o:['6','4','7','9'],a:'6'},
+  {q:'आधार और लंब के बीच कौन-सा कोण होता है?',o:['90°','60°','45°','180°'],a:'90°'},
+  {q:'समकोण त्रिभुज में कर्ण हमेशा कैसा होता है?',o:['सबसे लंबा','सबसे छोटा','आधार के बराबर','लंब के बराबर'],a:'सबसे लंबा'},
+  {q:'यदि आधार² + लंब² = 100 है, तो कर्ण कितना होगा?',o:['10','20','50','100'],a:'10'},
+  {q:'5, 12, 13 में कर्ण कौन है?',o:['13','12','5','17'],a:'13'},
+  {q:'पाइथागोरस प्रमेय किस त्रिभुज पर लागू होती है?',o:['समकोण त्रिभुज','समबाहु त्रिभुज','विषमबाहु त्रिभुज','किसी भी चतुर्भुज'],a:'समकोण त्रिभुज'}
+ ],
+ en:[
+  {q:'In a right triangle, what is the hypotenuse?',o:['The longest side opposite the right angle','The shortest side','The bottom side','The top side'],a:'The longest side opposite the right angle'},
+  {q:'Which formula represents the Pythagoras theorem?',o:['Hypotenuse² = Base² + Perpendicular²','Base² = Hypotenuse² + Perpendicular²','Perpendicular² = Base² + Hypotenuse²','Hypotenuse = Base + Perpendicular'],a:'Hypotenuse² = Base² + Perpendicular²'},
+  {q:'If base = 3 and perpendicular = 4, what is the hypotenuse?',o:['5','6','7','25'],a:'5'},
+  {q:'If hypotenuse = 13 and base = 5, what is the perpendicular?',o:['12','8','10','18'],a:'12'},
+  {q:'If perpendicular = 8 and hypotenuse = 10, what is the base?',o:['6','4','7','9'],a:'6'},
+  {q:'What angle is formed between base and perpendicular?',o:['90°','60°','45°','180°'],a:'90°'},
+  {q:'In a right triangle, the hypotenuse is always:',o:['The longest side','The shortest side','Equal to the base','Equal to the perpendicular'],a:'The longest side'},
+  {q:'If base² + perpendicular² = 100, what is the hypotenuse?',o:['10','20','50','100'],a:'10'},
+  {q:'In 5, 12, 13, which side is the hypotenuse?',o:['13','12','5','17'],a:'13'},
+  {q:'Pythagoras theorem is used for which triangle?',o:['Right triangle','Equilateral triangle','Scalene triangle','Any quadrilateral'],a:'Right triangle'}
+ ]
+};
+let medium='hi',questions=[],idx=0,correctCount=0,coins=0,solved=[],soundOn=true,lastGood='',lastBad='';
+function shuffle(arr){return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])}
+function chooseMedium(m){medium=m;questions=data[m].map(x=>({...x,o:shuffle(x.o)}));idx=0;correctCount=0;coins=0;solved=Array(questions.length).fill(false);document.getElementById('start').classList.add('hide');document.getElementById('quiz').classList.remove('hide');document.getElementById('mediumPill').textContent=m==='hi'?'Hindi Medium':'English Medium';render()}
+function render(){const q=questions[idx];document.getElementById('progress').textContent=`Q ${idx+1}/${questions.length}`;document.getElementById('coins').textContent=`Coins: ${coins}`;document.getElementById('question').textContent=q.q;document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback';document.getElementById('need').classList.add('hide');document.getElementById('nextBtn').textContent=idx===questions.length-1?'Finish':'Next';const box=document.getElementById('options');box.innerHTML='';q.o.forEach((op,i)=>{const b=document.createElement('button');b.className='option';b.textContent=String.fromCharCode(65+i)+'. '+op;b.onclick=()=>selectOption(b,op);box.appendChild(b)})}
+function pick(list,last){let m=list[Math.floor(Math.random()*list.length)];if(list.length>1){while(m===last)m=list[Math.floor(Math.random()*list.length)]}return m}
+function beep(type){if(!soundOn)return;try{const ac=new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=type==='good'?620:type==='bad'?180:820;g.gain.setValueAtTime(.001,ac.currentTime);g.gain.exponentialRampToValueAtTime(.08,ac.currentTime+.02);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.22);o.start();o.stop(ac.currentTime+.24)}catch(e){}}
+function confetti(big=false){const colors=['#39ff96','#74eaff','#ffd166','#ff5d7d','#ff62d2','#ffffff'];const n=big?70:24;for(let i=0;i<n;i++){const s=document.createElement('i');s.className='spark '+(big?'bigSpark':'');s.style.left=(Math.random()*100)+'vw';s.style.bottom=(-10-Math.random()*30)+'px';s.style.background=colors[Math.floor(Math.random()*colors.length)];s.style.animationDelay=(Math.random()*.25)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),2100)}}
+function selectOption(btn,op){document.querySelectorAll('.option').forEach(x=>x.classList.remove('correct','wrong'));document.getElementById('need').classList.add('hide');const fb=document.getElementById('feedback');if(op===questions[idx].a){btn.classList.add('correct');if(!solved[idx]){solved[idx]=true;correctCount++;coins+=10;if(correctCount%5===0)confetti(true)}lastGood=pick(correctMsgs,lastGood);fb.textContent=lastGood;fb.className='feedback good';beep('good');confetti(false)}else{btn.classList.add('wrong');lastBad=pick(wrongMsgs,lastBad);fb.textContent='😢 '+lastBad;fb.className='feedback bad';beep('bad')}}
+function nextQ(){if(!solved[idx]){document.getElementById('need').classList.remove('hide');beep('bad');return}if(idx<questions.length-1){idx++;render()}else{finish()}}
+function prevQ(){if(idx>0){idx--;render()}}
+function finish(){document.getElementById('quiz').classList.add('hide');document.getElementById('result').classList.remove('hide');confetti(true);beep('victory')}
+function showFinal(){const name=(document.getElementById('studentName').value||'Student').trim();const comment=correctCount>=9?'Excellent! मजबूत concept बन रहा है।':correctCount>=7?'Good Going! थोड़ा और practice करो, mastery आएगी।':'Practice चाहिए. Base, perpendicular, hypotenuse रोज 10 मिनट करो.';document.getElementById('finalBox').classList.remove('hide');document.getElementById('scoreText').textContent=`${name}: ${correctCount}/${questions.length} | Coins: ${coins}`;document.getElementById('positive').textContent=comment;const link=publicQuizLink;const rawMsg=`${quizTitle}\nScore: ${correctCount}/${questions.length}\n${comment}\nQuiz Link: ${link}`;const msg=encodeURIComponent(rawMsg);document.getElementById('shareBtns').innerHTML=`<a class="wa" target="_blank" rel="noopener" href="https://wa.me/?text=${msg}">WhatsApp Share</a><a class="wa" target="_blank" rel="noopener" href="https://wa.me/?text=${msg}">WhatsApp Status</a><a class="fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}">Facebook Share</a><a class="ig" target="_blank" rel="noopener" href="https://www.instagram.com/">Instagram Share</a><a class="ig" target="_blank" rel="noopener" href="https://www.instagram.com/">Instagram Story</a><button class="copy" onclick="copyLink()">Copy Link</button>`;if(window.IdeaKDCPracticeTools){window.IdeaKDCPracticeTools.renderResultTools({target:'#finalBox',name:name,topic:quizTitle,score:correctCount,total:questions.length,coins:coins,quizUrl:link,shareText:rawMsg,showShare:false})}confetti(true)}
+function copyLink(){navigator.clipboard.writeText(publicQuizLink);alert('Quiz link copied!')}
+function restart(){location.reload()} function goHome(){window.location.href='https://practicekarlo.ideakdc.in'} function toggleSound(){soundOn=!soundOn;document.getElementById('soundBtn').textContent='Sound: '+(soundOn?'ON':'OFF')}
+</script>
+<script src="/assets/js/battle-room.js"></script>
+<script src="/assets/js/practice-certificate.js"></script>
+<script src="/assets/js/practice-config.js"></script>
+<script src="/assets/js/practice-footer.js"></script>
+</body>
+</html>
